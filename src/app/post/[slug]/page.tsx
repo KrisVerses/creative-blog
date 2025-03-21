@@ -1,6 +1,6 @@
 import { allPosts } from "contentlayer/generated";  // Import all posts that ContentLayer has processed
 import { useMDXComponent } from "next-contentlayer/hooks";  // Hook to convert MDX code into React components
-
+import MDXComponents from "@/components/ui/MDXComponents";
 function PostPage({ params }: { params: { slug: string } }) {
   // Find the specific post that matches the URL slug
   const post = allPosts.find(
@@ -23,10 +23,26 @@ function PostPage({ params }: { params: { slug: string } }) {
       </h1>
       {/* Render the MDX content with Tailwind's typography styles */}
       <div className="mt-8 prose prose-lg">
-        <MDXContent />
+        <MDXContent components={MDXComponents} />
       </div>
     </div>
   );
 }
 
 export default PostPage;
+
+/**
+ * Styling Architecture:
+ * 
+ * 1. prose classes (prose prose-lg):
+ *    - Provides consistent typography for standard markdown elements
+ *    - Handles spacing, font sizes, and content rhythm
+ *    - Applied to: headings, paragraphs, lists, blockquotes, etc.
+ * 
+ * 2. MDXComponents:
+ *    - Enables custom React components in MDX files
+ *    - Used for interactive features and component-based content
+ *    - Example: <CustomAlert>, <CodePlayground>, interactive buttons
+ * 
+ * Both work together: prose for typography, MDXComponents for React components
+ */
