@@ -1,14 +1,41 @@
+/**
+ * MDXComponents.tsx
+ * 
+ * This file serves two main purposes:
+ * 1. Maps basic HTML elements (h1, p, etc.) to styled components
+ * 2. Registers custom MDX components for use in .mdx files
+ * 
+ * Organization Pattern:
+ * - Basic HTML elements are defined here for consistent styling
+ * - Complex, reusable MDX components are imported from /mdx directory
+ * - This separation keeps the code modular and maintainable
+ */
+
 import { cn } from "@/lib/utils";
-import { Code2, ExternalLink, Link as LinkIcon } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import Link from "next/link";
 
-// Define types for MDX components
+// Import custom MDX components from /mdx directory
+// These are separated for better maintainability and reusability
+import { Callout } from "../mdx/Callout";
+import { Card } from "../mdx/Card";
+import { Steps } from "../mdx/Steps";
+
 type MDXComponents = {
     [key: string]: React.ComponentType<any>;
 };
 
 const MDXComponents: MDXComponents = {
-    // Headings with custom styling and anchor links
+    /**
+     * HTML Element Mappings
+     * 
+     * These stay in MDXComponents.tsx because:
+     * 1. They're simple style mappings
+     * 2. They're used across all MDX content
+     * 3. They don't need complex logic or props
+     */
+
+    // Heading hierarchy with consistent styling
     h1: ({ className, ...props }) => (
         <h1
             className={cn(
@@ -46,7 +73,12 @@ const MDXComponents: MDXComponents = {
         />
     ),
 
-    // Paragraphs and text elements
+    /**
+     * Text Elements
+     * 
+     * Basic text elements that need consistent styling
+     * These are kept here because they're fundamental building blocks
+     */
     p: ({ className, ...props }) => (
         <p
             className={cn("leading-7 [&:not(:first-child)]:mt-6", className)}
@@ -72,7 +104,12 @@ const MDXComponents: MDXComponents = {
         <li className={cn("mt-2", className)} {...props} />
     ),
 
-    // Links with external link icon
+    /**
+     * Interactive Elements
+     * 
+     * Elements that need special handling (like external links)
+     * Stay here because they're part of the basic content structure
+     */
     a: ({ className, href, ...props }) => {
         const isExternal = href?.startsWith("http");
         return (
@@ -92,7 +129,11 @@ const MDXComponents: MDXComponents = {
         );
     },
 
-    // Code blocks with syntax highlighting
+    /**
+     * Code Elements
+     * 
+     * Special handling for code blocks and inline code
+     */
     code: ({ className, ...props }) => (
         <code
             className={cn(
@@ -112,34 +153,17 @@ const MDXComponents: MDXComponents = {
         />
     ),
 
-    // Custom components for MDX
-    Callout: ({ className, ...props }) => (
-        <div
-            className={cn(
-                "my-6 flex items-start rounded-lg border border-slate-200 bg-slate-50 p-4",
-                className
-            )}
-            {...props}
-        />
-    ),
-    Card: ({ className, ...props }) => (
-        <div
-            className={cn(
-                "rounded-lg border border-slate-200 bg-white p-6 shadow-sm",
-                className
-            )}
-            {...props}
-        />
-    ),
-    Steps: ({ className, ...props }) => (
-        <div
-            className={cn(
-                "my-6 ml-6 [&>li]:mt-2 [&>li]:marker:text-slate-400",
-                className
-            )}
-            {...props}
-        />
-    ),
+    /**
+     * Custom MDX Components
+     * 
+     * These are imported from separate files because:
+     * 1. They have more complex logic/props
+     * 2. They might be used outside of MDX
+     * 3. They benefit from separate testing/maintenance
+     */
+    Callout,  // Complex UI component with its own props/logic
+    Card,     // Reusable card component that might need future enhancements
+    Steps,    // Specialized component for step-by-step content
 };
 
 export default MDXComponents;
