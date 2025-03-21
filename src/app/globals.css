@@ -1,42 +1,45 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* Import Tailwind's base styles and CSS reset */
+@tailwind base;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* Import component classes and any custom components */
+@tailwind components;
 
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
+/* Import utility classes - core of Tailwind's utility-first workflow */
+@tailwind utilities;
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-@media (prefers-color-scheme: dark) {
+/* Custom CSS can be added below */
+@layer base {
+  /* @layer base is for default element styles
+     Examples: h1, p, body, or resetting browser defaults */
   html {
-    color-scheme: dark;
+    scroll-behavior: smooth;
   }
 }
+
+@layer components {
+  /* @layer components is for reusable custom components
+     Example: A custom button style that combines multiple Tailwind utilities */
+  .custom-component {
+    @apply px-4 py-2 bg-blue-500 text-white rounded;
+  }
+}
+
+/* Best Practices for Tailwind CSS Layer Organization:
+ * 
+ * 1. @layer base: 
+ *    - Use for element defaults (h1, p, etc.)
+ *    - Browser reset styles
+ *    - Root variables
+ * 
+ * 2. @layer components:
+ *    - Reusable UI components
+ *    - Complex patterns combining multiple utilities
+ *    - Custom classes that will be used repeatedly
+ * 
+ * 3. @layer utilities:
+ *    - Single-purpose utility classes
+ *    - Custom utilities that extend Tailwind's core
+ * 
+ * Always use @layer to ensure proper CSS specificity
+ * Keep components modular and reusable
+ */
