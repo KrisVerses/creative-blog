@@ -1,6 +1,8 @@
 import { allPosts } from "contentlayer/generated";  // Import all posts that ContentLayer has processed
 import { useMDXComponent } from "next-contentlayer/hooks";  // Hook to convert MDX code into React components
 import MDXComponents from "@/components/ui/MDXComponents";
+import { format } from "date-fns";
+
 function PostPage({ params }: { params: { slug: string } }) {
   // Find the specific post that matches the URL slug
   const post = allPosts.find(
@@ -17,15 +19,22 @@ function PostPage({ params }: { params: { slug: string } }) {
   const MDXContent = useMDXComponent(post.body.code);
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:max-w-7xl lg:px-8">
-      <h1 className="text-2xl font-bold tracking-tight text-gray-900">
-        {post.title}
-      </h1>
-      {/* Render the MDX content with Tailwind's typography styles */}
+    <article className="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:max-w-7xl lg:px-8">
+      {/* Post header */}
+      <header className="mb-8">
+        <h1 className="text-3xl font-bold tracking-tight text-gray-900 mb-2">
+          {post.title}
+        </h1>
+        <time className="text-sm text-gray-500">
+          {format(new Date(post.date), 'MMMM d, yyyy')}
+        </time>
+      </header>
+
+      {/* Post content */}
       <div className="mt-8 prose prose-lg">
         <MDXContent components={MDXComponents} />
       </div>
-    </div>
+    </article>
   );
 }
 

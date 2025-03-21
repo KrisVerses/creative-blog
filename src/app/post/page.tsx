@@ -1,3 +1,4 @@
+import PostCard from "@/components/ui/PostCard";
 import { allPosts } from "contentlayer/generated";
 import Link from "next/link";
 
@@ -11,9 +12,7 @@ function PostIndex() {
       </h1>
       <ul className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {posts.map((post) => (
-          <li key={post._id}>
-            <Link href={post.url}>{post.title}</Link>
-          </li>
+          <PostCard key={post._id} post={post} />
         ))}
       </ul>
     </div>
