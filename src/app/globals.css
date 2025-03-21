@@ -1,28 +1,105 @@
-/* Import Tailwind's base styles and CSS reset */
+/* Base Layer - Fundamental styles */
 @tailwind base;
-
-/* Import component classes and any custom components */
-@tailwind components;
-
-/* Import utility classes - core of Tailwind's utility-first workflow */
-@tailwind utilities;
-
-/* Custom CSS can be added below */
 @layer base {
-  /* @layer base is for default element styles
-     Examples: h1, p, body, or resetting browser defaults */
+  /* CSS Custom Properties (Theme Variables) Guide
+   *
+   * Use CSS variables (custom properties) when you need:
+   * 1. Dynamic values that might change (dark/light mode, themes)
+   * 2. Values reused across multiple CSS properties
+   * 3. Values that need to be changed by JavaScript
+   * 
+   * Example Use Cases:
+   * - Theme colors that are used in multiple places
+   * - Spacing values that need to maintain consistency
+   * - Values that change based on user preferences or state
+   */
+  :root {
+    /* Color Theme Variables
+     * Use these when colors are:
+     * - Used in multiple places
+     * - Need to change based on theme (dark/light)
+     * - Part of your brand identity
+     */
+    --primary-color: #3b82f6;
+    --secondary-color: #1d4ed8;
+    
+    /* Spacing/Layout Variables
+     * Use these when you need:
+     * - Consistent spacing across components
+     * - Responsive values that change at breakpoints
+     */
+    --page-margin: 2rem;
+    --content-width: 65ch;
+  }
+
+  /* Dark Mode Theme Variables
+   * Demonstrates how variables enable easy theme switching
+   */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --primary-color: #60a5fa;
+      --secondary-color: #3b82f6;
+    }
+  }
+
+  /* Example of when NOT to use variables:
+   * - One-off values that aren't reused
+   * - Values that don't change
+   * - Simple utilities better handled by Tailwind
+   */
   html {
     scroll-behavior: smooth;
   }
+  /* Place for element defaults */
 }
 
+/* Components Layer - Reusable patterns */
+@tailwind components;
 @layer components {
-  /* @layer components is for reusable custom components
-     Example: A custom button style that combines multiple Tailwind utilities */
   .custom-component {
     @apply px-4 py-2 bg-blue-500 text-white rounded;
   }
+  /* Example of using theme variables in components */
+  .themed-card {
+    /* Use variables for values that might change with theme */
+    background-color: var(--primary-color);
+    margin: var(--page-margin);
+    /* Don't use variables for one-off or static values */
+    border-radius: 0.5rem;
+    padding: 1rem;
+  }
+  /* Place for reusable component styles */
 }
+
+/* Utilities Layer - Single-purpose classes */
+@tailwind utilities;
+@layer utilities {
+  /* Place for custom utility classes */
+}
+
+/* Using var() with CSS Custom Properties:
+ *
+ * 1. Basic Usage:
+ *    var(--variable-name)
+ *    Example: color: var(--primary-color);
+ *
+ * 2. With Fallback Value:
+ *    var(--variable-name, fallback-value)
+ *    Example: margin: var(--page-margin, 1rem);
+ *
+ * 3. Multiple Fallbacks:
+ *    var(--first-choice, var(--second-choice, default-value))
+ *    Example: color: var(--custom-blue, var(--primary-color, #3b82f6));
+ *
+ * 4. Using in Calculations:
+ *    calc(var(--variable-name) * 2)
+ *    Example: width: calc(var(--content-width) + 2rem);
+ *
+ * 5. In Tailwind Classes:
+ *    .custom-width {
+ *      width: var(--content-width);
+ *    }
+ */
 
 /* Best Practices for Tailwind CSS Layer Organization:
  * 
