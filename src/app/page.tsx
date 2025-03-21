@@ -1,6 +1,6 @@
 import Image from "next/image";
 import styles from "./page.module.css";
-import PostIndex from "./content/page";
+import PostIndex from "./post/page";
 
 export default function Home() {
   return (
