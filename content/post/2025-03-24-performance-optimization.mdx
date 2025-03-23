@@ -1,0 +1,88 @@
+---
+title: "Day 4 — Performance Optimization Journey"
+date: "2025-03-24"
+tags: ["performance", "optimization", "nextjs"]
+summary: "Diving deep into performance optimization techniques and implementing them in our Next.js application."
+---
+
+Today was all about performance optimization. It's fascinating how small changes can make a big difference in user experience.
+
+## Performance Metrics
+
+### Initial Load Time
+- Before: 2.8s
+- After: 1.2s
+- Improvement: 57% faster
+
+### First Contentful Paint (FCP)
+- Before: 1.5s
+- After: 0.8s
+- Improvement: 47% faster
+
+## Optimization Techniques
+
+### 1. Image Optimization
+
+```tsx
+// Before
+<img src="/large-image.jpg" alt="Large image" />
+
+// After
+import Image from 'next/image'
+
+<Image
+  src="/large-image.jpg"
+  alt="Large image"
+  width={800}
+  height={600}
+  loading="lazy"
+  placeholder="blur"
+/>
+```
+
+### 2. Code Splitting
+
+```tsx
+// Before
+import HeavyComponent from './HeavyComponent'
+
+// After
+import dynamic from 'next/dynamic'
+const HeavyComponent = dynamic(() => import('./HeavyComponent'))
+```
+
+### 3. Caching Strategy
+
+```typescript
+// Implemented stale-while-revalidate pattern
+export async function getStaticProps() {
+  const data = await fetchData()
+  return {
+    props: {
+      data,
+      revalidate: 3600 // Revalidate every hour
+    }
+  }
+}
+```
+
+## Key Learnings
+
+1. **Lazy Loading**: Not everything needs to load immediately
+2. **Caching**: Proper caching can dramatically improve performance
+3. **Bundle Size**: Smaller bundles mean faster load times
+
+## Tools Used
+
+- Lighthouse for performance metrics
+- Chrome DevTools for detailed analysis
+- Next.js Analytics for real-world data
+
+## Next Steps
+
+- [ ] Implement service worker
+- [ ] Add resource hints
+- [ ] Optimize third-party scripts
+- [ ] Set up performance monitoring
+
+Remember: Performance optimization is an ongoing process, not a one-time task. 
