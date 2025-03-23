@@ -35,7 +35,7 @@ const filterPostsByTag = (posts: Post[], tag: string | null): Post[] => {
 }
 
 /**
- * Searches through posts based on title or summary
+ * Searches through posts based on title, summary, and body content
  * @param posts - Array of blog posts
  * @param searchTerm - Search term to filter by
  * @returns Filtered array of posts matching the search term
@@ -45,7 +45,8 @@ const searchPosts = (posts: Post[], searchTerm: string): Post[] => {
     const term = searchTerm.toLowerCase()
     return posts.filter(post =>
         post.title.toLowerCase().includes(term) ||
-        (post.summary?.toLowerCase() || '').includes(term)
+        (post.summary?.toLowerCase() || '').includes(term) ||
+        (post.body?.raw?.toLowerCase() || '').includes(term)
     )
 }
 
