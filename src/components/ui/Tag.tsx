@@ -1,16 +1,22 @@
 import { cn } from "@/lib/utils";
 
-const Tag = ({ tag }: { tag: string }) => {
-    return (
-        <div className={cn(
-            // Base styles: shape, color, and spacing
-            "rounded-full bg-gray-200 px-4 py-2 text-sm font-medium text-gray-800",
+interface TagProps {
+    tag: string;
+    isSelected?: boolean;
+    onClick?: () => void;
+}
 
-            // Interactive states: hover and focus styles for accessibility
-            "hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
-        )}>
+const Tag: React.FC<TagProps> = ({ tag, isSelected = false, onClick }) => {
+    return (
+        <button
+            onClick={onClick}
+            className={`px-3 py-1 rounded-full text-sm ${isSelected
+                    ? 'bg-blue-500 text-white'
+                    : 'bg-gray-100 hover:bg-gray-200'
+                }`}
+        >
             {tag}
-        </div>
+        </button>
     )
 }
 
