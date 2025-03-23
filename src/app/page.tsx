@@ -4,7 +4,7 @@ import Navbar from "@/components/ui/Navbar";
 
 export default function Home() {
   return (
-    <div>
+    <div className="max-w-5xl mx-auto">
       <header>
         <Navbar />
       </header>
