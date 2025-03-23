@@ -1,17 +1,18 @@
-import Image from "next/image";
+import Footer from "@/components/ui/Footer";
 import PostIndex from "./post/page";
+import Navbar from "@/components/ui/Navbar";
 
 export default function Home() {
   return (
     <div>
       <header>
-        <h1>Header</h1>
+        <Navbar />
       </header>
       <main>
         <PostIndex />
       </main>
       <footer>
-        <p>Footer</p>
+        <Footer />
       </footer>
     </div>
   );
