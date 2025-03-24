@@ -103,7 +103,7 @@ export default function PostList({ searchTerm }: PostListProps) {
         <div className="space-y-6">
             {/* Tag Filter Section */}
             <div>
-                <h3 className="text-lg font-semibold mb-2">Filter by Tag:</h3>
+                <h3 className="text-lg text-slate-800 font-semibold mb-2">Filter by Tag:</h3>
                 <TagList
                     selectedTag={selectedTag}
                     onTagSelect={setSelectedTag}
@@ -117,7 +117,7 @@ export default function PostList({ searchTerm }: PostListProps) {
                         <article
                             className="p-4 border rounded-lg hover:shadow-md transition-shadow group my-4"
                         >
-                            <h2 className="text-xl font-bold group-hover:text-blue-600 transition-colors">{post.title}</h2>
+                            <h2 className="text-xl font-bold text-slate-800 group-hover:text-blue-600 transition-colors">{post.title}</h2>
                             <p className="text-gray-600">{format(new Date(post.date), 'MMMM d, yyyy')}</p>
                             <HighlightedText text={post.summary || ''} term={searchTerm} />
                             {searchTerm && post.body?.raw && (

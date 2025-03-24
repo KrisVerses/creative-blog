@@ -20,7 +20,7 @@ function PostPage({ params }: { params: { slug: string } }) {
   const MDXContent = useMDXComponent(post.body.code);
 
   return (
-    <article className="max-w-2xl mx-auto px-4 py-16 sm:px-6 lg:max-w-5xl lg:px-8">
+    <article className="max-w-2xl mx-auto px-4 py-16 sm:px-6 lg:max-w-4xl lg:px-8">
 
       {/* a sleek back button */}
       <Link href="/" className="mb-4 inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700">
@@ -30,10 +30,10 @@ function PostPage({ params }: { params: { slug: string } }) {
 
       {/* Post header */}
       <header className="mb-8">
-        <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 mb-4">
+        <h1 className="text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-800 mb-4">
           {post.title}
         </h1>
-        <div className="flex justify-between gap-2">
+        <div className="max-w-2xl flex justify-between gap-2">
           <time className="text-sm text-gray-500">
             {format(new Date(post.date), 'MMMM d, yyyy')}
           </time>
@@ -55,7 +55,7 @@ function PostPage({ params }: { params: { slug: string } }) {
       </header>
 
       {/* Post content */}
-      <div className="mt-8 prose prose-lg prose-neutral">
+      <div className="max-w-7xl mx-auto mt-8 prose prose-lg prose-neutral">
         <MDXContent components={MDXComponents} />
       </div>
       {/* a sleek minimal share and copy link button that follows this prompt: Share Buttons or Copy Link
