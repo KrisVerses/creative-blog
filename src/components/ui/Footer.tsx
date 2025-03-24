@@ -9,7 +9,7 @@ export default function Footer() {
             <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-5xl lg:px-8">
                 <div className="flex justify-between items-center">
                     <p className="text-sm text-gray-500">
-                        © {new Date().getFullYear()} Kris Verses
+                        © {new Date().getFullYear()} KRIS.
                     </p>
                     <div className="flex space-x-6">
                         <Link
