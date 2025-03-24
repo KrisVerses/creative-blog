@@ -20,6 +20,9 @@ import Link from "next/link";
 import { Callout } from "../mdx/Callout";
 import { Card } from "../mdx/Card";
 import { Steps } from "../mdx/Steps";
+import { Info } from "../mdx/Info";
+import { Warning } from "../mdx/Warning";
+import { Tip } from "../mdx/Tip";
 
 type MDXComponents = {
     [key: string]: React.ComponentType<any>;
@@ -137,7 +140,7 @@ const MDXComponents: MDXComponents = {
     code: ({ className, ...props }) => (
         <code
             className={cn(
-                "relative rounded bg-slate-100 px-[0.3rem] py-[0.2rem] font-mono text-sm",
+                "relative rounded bg-slate-100 px-[0.3rem] py-[0.2rem] font-mono text-sm text-slate-800",
                 className
             )}
             {...props}
@@ -164,6 +167,40 @@ const MDXComponents: MDXComponents = {
     Callout,  // Complex UI component with its own props/logic
     Card,     // Reusable card component that might need future enhancements
     Steps,    // Specialized component for step-by-step content
+    Info,
+    Warning,
+    Tip,
 };
 
 export default MDXComponents;
+
+/**
+ * Example usage of Callout component in MDX files:
+ * 
+ * ```mdx
+ * # My Blog Post
+ * 
+ * Regular markdown content here...
+ * 
+ * <Callout type="info">
+ *   This is an info callout with a title
+ *   <h3>Important Note</h3>
+ *   <p>This callout contains both markdown and custom styling</p>
+ * </Callout>
+ * 
+ * <Callout type="warning">
+ *   This is a warning callout
+ *   <p>You can use any markdown inside callouts</p>
+ *   - List items
+ *   - **Bold text**
+ *   - `code snippets`
+ * </Callout>
+ * ```
+ * 
+ * Available Callout types:
+ * - info: Blue background for general information
+ * - warning: Yellow background for warnings
+ * - error: Red background for errors
+ * - success: Green background for success messages
+ * - tip: Purple background for tips and tricks
+ */
