@@ -22,6 +22,7 @@ export const Post = defineDocumentType(() => ({
         "Tags must be 30 characters or less", // Error message returned if validation fails
     },
     summary: { type: "string", required: false },
+    readingTime: { type: "number", required: true },
   },
   // Define computed fields that will be added to each document
   computedFields: {
