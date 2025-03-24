@@ -1,0 +1,84 @@
+---
+title: "Search Implementation Strategies: Client vs Server"
+date: "2024-03-23"
+tags: ["search", "performance", "development"]
+summary: "Exploring different approaches to implementing search functionality in modern web applications."
+readingTime: 8
+---
+
+# Search Implementation Strategies
+
+## Client-side Search
+Perfect for static content and instant results.
+
+### Implementation
+```typescript
+// Example of client-side search
+const posts = allPosts;  // from contentlayer/generated
+
+const filteredPosts = posts.filter(post => 
+  post.title.toLowerCase().includes(searchTerm)
+);
+```
+
+### Benefits
+- Instant results
+- Works offline
+- No server load
+- Simple implementation
+
+### Limitations
+- Limited to loaded data
+- Can't search content deeply
+- Performance with large datasets
+
+## Server-side Search
+Ideal for dynamic content and deep searching.
+
+### Implementation
+```typescript
+// Example of server-side search with Sanity
+const results = await client.fetch(`
+  *[_type == "post" && (
+    title match $searchTerm || 
+    content match $searchTerm ||
+    excerpt match $searchTerm
+  )]
+`, { searchTerm: "*" + searchTerm + "*" });
+```
+
+### Benefits
+- Searches entire content
+- More accurate results
+- Better for large datasets
+- Real-time updates
+
+### Limitations
+- Requires API calls
+- Network dependency
+- Server load
+- More complex implementation
+
+## Hybrid Approach
+Combining the best of both worlds.
+
+### When to Use
+- Large content bases
+- Need for instant results
+- Deep content search
+- Real-time updates
+
+### Implementation Strategy
+1. Initial load: Get all posts
+2. Client-side filtering for:
+   - Tag filtering
+   - Quick searches
+   - Instant UI updates
+3. Server-side search for:
+   - Deep content search
+   - Full-text search
+   - Complex queries
+
+<Callout type="info">
+  Choose your search strategy based on your content size, update frequency, and user experience requirements.
+</Callout> 

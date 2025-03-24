@@ -1,0 +1,200 @@
+---
+title: "MDX, ContentLayer, and CMS Architectures: A Complete Guide"
+date: "2024-03-23"
+tags: ["mdx", "contentlayer", "cms", "development"]
+summary: "A comprehensive guide to MDX processing, ContentLayer benefits, and choosing the right CMS architecture."
+readingTime: 12
+---
+
+# MDX, ContentLayer, and CMS Architectures
+
+## MDX to ContentLayer Flow
+
+### 1. Content Creation
+```tsx
+---
+title: "My Post"
+date: "2024-03-23"
+tags: ["mdx", "cms"]
+---
+# Content here
+Regular markdown with <CustomComponent />
+```
+
+### 2. ContentLayer Processing
+```typescript
+// contentlayer.config.ts
+export default defineDocumentType(() => ({
+  name: 'Post',
+  filePathPattern: 'post/**/*.mdx',
+  fields: {
+    title: { type: 'string', required: true },
+    date: { type: 'date', required: true },
+    tags: { type: 'list', of: { type: 'string' } }
+  },
+  computedFields: {
+    slug: {
+      type: 'string',
+      resolve: (doc) => doc._raw.sourceFileName.replace(/\.mdx$/, '')
+    }
+  }
+}))
+```
+
+### 3. React Integration
+```typescript
+// In your React component
+import { allPosts } from "contentlayer/generated"
+import { useMDXComponent } from "next-contentlayer/hooks"
+
+const MDXContent = useMDXComponent(post.body.code)
+```
+
+## Benefits of ContentLayer and MDX
+
+### ContentLayer Benefits
+- Type-safe content
+- Automatic content processing
+- Build-time validation
+- Computed fields
+- Easy integration with Next.js
+
+### MDX Benefits
+- Markdown with React components
+- Custom components in content
+- Interactive content
+- Component reusability
+- Developer-friendly
+
+## Tailwind Typography (Prose)
+
+### Basic Usage
+```tsx
+<div className="prose prose-lg prose-neutral">
+  <MDXContent components={MDXComponents} />
+</div>
+```
+
+### Prose Benefits
+- Consistent typography
+- Responsive design
+- Dark mode support
+- Customizable styles
+- Markdown element styling
+
+## CMS Architecture Comparison
+
+### Git-based CMS
+```typescript
+// Structure
+content/
+  post/
+    my-post.mdx
+  about.mdx
+  contact.mdx
+
+// Benefits
+- Version controlled
+- No database
+- Fast builds
+- Developer-friendly
+```
+
+### Traditional CMS
+```typescript
+// Structure
+- Database-driven
+- Admin interface
+- Built-in user management
+- Plugin ecosystem
+
+// Benefits
+- User-friendly admin
+- Rich features
+- Easy content updates
+- Built-in security
+```
+
+### Headless CMS
+```typescript
+// Structure
+- API-first
+- Content modeling
+- Multi-channel delivery
+- Modern architecture
+
+// Benefits
+- Better performance
+- Frontend flexibility
+- Modern development
+- Scalable
+```
+
+## When to Use Each Approach
+
+### Git-based CMS
+- Personal/company blogs
+- Documentation sites
+- Small business websites
+- Technical content
+- Static content
+
+### Traditional CMS
+- E-commerce sites
+- News websites
+- Corporate sites
+- Multi-user platforms
+- Frequent updates
+
+### Traditional Backend
+- Social platforms
+- Banking apps
+- Real-time features
+- Complex data
+- Custom logic
+
+## Headless CMS Limitations
+
+### Database Control
+```typescript
+// Can't:
+- Create custom tables
+- Write complex queries
+- Custom indexing
+- Complex relationships
+```
+
+### Business Logic
+```typescript
+// Limited to:
+- Content validation
+- Basic transformations
+- Simple workflows
+- No custom processing
+```
+
+### API Flexibility
+```typescript
+// Can't:
+- Custom endpoints
+- Complex caching
+- Custom rate limiting
+- Custom middleware
+```
+
+### Real-time Features
+```typescript
+// Limited to:
+- Content updates
+- Collaboration
+- No custom WebSocket
+- No custom notifications
+```
+
+<Callout type="tip">
+  Choose your CMS based on your specific needs. Git-based CMS is perfect for static content, while Headless CMS and Traditional Backend offer more flexibility for dynamic applications.
+</Callout>
+
+<Callout type="info">
+  ContentLayer and MDX provide a powerful combination for developer-friendly content management, while Tailwind Typography ensures consistent and beautiful content styling.
+</Callout> 
