@@ -19,7 +19,7 @@ function PostPage({ params }: { params: { slug: string } }) {
   const MDXContent = useMDXComponent(post.body.code);
 
   return (
-    <article className="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:max-w-7xl lg:px-8">
+    <article className="max-w-2xl mx-auto px-4 py-16 sm:px-6 lg:max-w-5xl lg:px-8">
       {/* Post header */}
       <header className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight text-gray-900 mb-2">
