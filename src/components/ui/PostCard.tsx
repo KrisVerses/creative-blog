@@ -81,7 +81,7 @@ const PostCard = ({ post }: PostCardProps) => {
                 >
                     Read more →
                 </Link>
-                <TagList />
+                <TagList selectedTag={null} onTagSelect={() => { }} />
             </li>
         </>
     );

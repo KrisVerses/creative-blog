@@ -1,11 +1,5 @@
-import PostIndex from "./post/page";
+import HomeIndex from "@/components/ui/HomeIndex"
 
 export default function Home() {
-  return (
-    <div className="max-w-5xl mx-auto">
-      <main>
-        <PostIndex />
-      </main>
-    </div>
-  );
+  return <HomeIndex />
 }

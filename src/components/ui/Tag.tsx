@@ -10,9 +10,9 @@ const Tag: React.FC<TagProps> = ({ tag, isSelected = false, onClick }) => {
     return (
         <button
             onClick={onClick}
-            className={`px-3 py-1 rounded-full text-sm ${isSelected
-                    ? 'bg-blue-500 text-white'
-                    : 'bg-gray-100 hover:bg-gray-200'
+            className={`px-3 py-1 rounded-full text-sm hover:text-white ${isSelected
+                ? 'bg-[#FF6F61]/80 text-white'
+                : 'bg-gray-100 hover:bg-[#FF6F61]'
                 }`}
         >
             {tag}

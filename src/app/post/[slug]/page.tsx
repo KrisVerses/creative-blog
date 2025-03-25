@@ -30,7 +30,7 @@ function PostPage({ params }: { params: { slug: string } }) {
 
       {/* Post header */}
       <header className="mb-8">
-        <h1 className="text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-800 mb-4">
+        <h1 className="text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-800 mb-4">
           {post.title}
         </h1>
         <div className="max-w-2xl flex justify-between gap-2">

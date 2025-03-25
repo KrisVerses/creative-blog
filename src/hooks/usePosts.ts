@@ -20,7 +20,7 @@ import { allPosts, Post } from 'contentlayer/generated'
 const fetchPosts = async (): Promise<Post[]> => {
     // In a real app, this would be an API call
     // For now, we're using the static content from contentlayer
-    return allPosts
+    return allPosts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 }
 
 /**

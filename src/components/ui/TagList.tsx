@@ -32,8 +32,8 @@ const TagList: React.FC<TagListProps> = ({ selectedTag, onTagSelect }) => {
             <button
                 onClick={() => onTagSelect(null)}
                 className={`px-3 py-1 rounded-full text-sm ${selectedTag === null
-                        ? 'bg-blue-500 text-white'
-                        : 'bg-gray-100 hover:bg-gray-200'
+                    ? 'bg-[#FF6F61]/80 text-white'
+                    : 'bg-gray-100 hover:bg-[#FF6F61] hover:text-white'
                     }`}
             >
                 All

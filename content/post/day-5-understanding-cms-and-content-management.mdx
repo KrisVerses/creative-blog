@@ -1,0 +1,227 @@
+---
+title: "Day 5: Deep Dive into CMS Architectures and Content Management"
+date: "2024-03-24T12:00:00-05:00"
+tags: ["cms", "mdx", "contentlayer", "architecture"]
+summary: "A comprehensive review of different CMS architectures, MDX workflow, and when to use each approach in your web applications."
+readingTime: 12
+---
+
+# Understanding CMS Architectures and Content Management
+
+<Card>
+  Today we explored various CMS architectures, content management approaches, and
+  how to choose the right solution for different project requirements. Let's break
+  down what we learned.
+</Card>
+
+## MDX and ContentLayer Workflow
+
+<Steps>
+1. **Content Creation**
+   - Write content in MDX format
+   - Add frontmatter metadata
+   - Include custom components
+
+2. **ContentLayer Processing**
+   - Validates MDX files
+   - Generates TypeScript types
+   - Creates content cache
+
+3. **Next.js Integration**
+   - Import generated content
+   - Type-safe content access
+   - Render MDX components
+</Steps>
+
+<Tip>
+  ContentLayer's type generation means you get autocomplete and type checking for
+  your content, making it much safer to work with than raw MDX files.
+</Tip>
+
+## Benefits of ContentLayer and MDX
+
+<Card>
+  **ContentLayer Advantages**
+  - Type-safe content
+  - Incremental builds
+  - Excellent DX
+  - Fast content processing
+  
+  **MDX Benefits**
+  - Mix markdown and JSX
+  - Custom components
+  - Dynamic content
+  - Rich formatting
+</Card>
+
+## Tailwind Typography (prose)
+
+<Steps>
+1. **Purpose**
+   - Styles markdown content
+   - Consistent typography
+   - Responsive design
+
+2. **Implementation**
+   ```tsx
+   <article className="prose dark:prose-invert">
+     {content}
+   </article>
+   ```
+
+3. **Customization**
+   - Color schemes (prose-slate, prose-gray)
+   - Size variants (prose-sm, prose-lg)
+   - Dark mode support
+</Steps>
+
+<Warning>
+  The prose classes only work on content within the prose container. Regular HTML
+  elements outside won't be affected by prose styles.
+</Warning>
+
+## CMS Architecture Comparison
+
+### Git-based CMS
+
+<Card>
+  **Best For**
+  - Developer blogs
+  - Documentation sites
+  - Small-medium projects
+  - Technical teams
+  
+  **Limitations**
+  - Limited content preview
+  - Technical barrier for editors
+  - No real-time collaboration
+</Card>
+
+### Traditional CMS
+
+<Steps>
+1. **Characteristics**
+   - All-in-one solution
+   - Built-in admin UI
+   - Coupled frontend
+   - Database storage
+
+2. **Best For**
+   - Non-technical teams
+   - Simple websites
+   - Quick setup needs
+   - Standard content types
+
+3. **Examples**
+   - WordPress
+   - Drupal
+   - Joomla
+</Steps>
+
+### Headless CMS
+
+<Card>
+  **Key Features**
+  - API-first approach
+  - Flexible frontend
+  - Content modeling
+  - Multiple channels
+  
+  **Examples**
+  - Sanity
+  - Contentful
+  - Strapi
+</Card>
+
+## When to Use Each Approach
+
+<Steps>
+1. **Choose Git-based CMS When**
+   - Team is technical
+   - Content is version-controlled
+   - Build-time generation is sufficient
+   - Budget is limited
+
+2. **Choose Traditional CMS When**
+   - Non-technical content editors
+   - Simple website needs
+   - Quick setup required
+   - Standard features suffice
+
+3. **Choose Headless CMS When**
+   - Multiple frontends needed
+   - Complex content modeling
+   - Real-time updates required
+   - Scalable API access needed
+
+4. **Choose Traditional Backend When**
+   - Custom business logic needed
+   - Complex data relationships
+   - Heavy data processing
+   - Full control required
+</Steps>
+
+## Customization Limitations
+
+<Warning>
+  Headless CMSes like Sanity have limitations compared to traditional backends:
+  - Limited custom business logic
+  - Restricted data modeling
+  - API constraints
+  - Plugin/extension limitations
+</Warning>
+
+<Card>
+  **Traditional Backend Advantages**
+  - Full control over logic
+  - Custom database schemas
+  - Flexible API design
+  - Integration freedom
+  - Complex workflows
+</Card>
+
+<Tip>
+  Consider a hybrid approach: use a headless CMS for content management while
+  implementing custom features with a traditional backend when needed.
+</Tip>
+
+## Making the Right Choice
+
+<Steps>
+1. **Evaluate Requirements**
+   - Team technical skills
+   - Content update frequency
+   - Customization needs
+   - Budget constraints
+
+2. **Consider Scale**
+   - Expected growth
+   - Content volume
+   - Traffic patterns
+   - Performance needs
+
+3. **Plan for Future**
+   - Potential integrations
+   - Feature roadmap
+   - Team changes
+   - Technology evolution
+</Steps>
+
+<Warning>
+  Don't over-engineer: choose the simplest solution that meets your current needs
+  while allowing for reasonable future growth.
+</Warning>
+
+## Conclusion
+
+<Card>
+  Each CMS architecture has its place. Git-based CMS with MDX and ContentLayer
+  offers an excellent developer experience for technical teams, while traditional
+  and headless CMSes provide different trade-offs for various use cases.
+</Card>
+
+<Tip>
+  Start by understanding your team's capabilities and project requirements before
+  choosing a CMS architecture. The right choice now can save significant
+  refactoring later.
+</Tip> 

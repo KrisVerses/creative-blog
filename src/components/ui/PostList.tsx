@@ -20,6 +20,8 @@ import Link from 'next/link';
  * - Loading and error states
  */
 
+//TODO: Modularize the post list component: extractSnippet, HighlightedText, tag filter
+
 /**
  * Extracts a snippet of text around a search term
  * @param text - The full text to search in
@@ -64,7 +66,7 @@ function extractSnippet(text: string, term: string, contextLength: number = 100)
  * @returns JSX with highlighted text
  */
 function HighlightedText({ text, term }: { text: string; term: string }) {
-    if (!term) return <p className="mt-2">{text}</p>;
+    if (!term) return <p className="mt-4 mb-2">{text}</p>;
 
     const parts = text.split(new RegExp(`(${term})`, 'gi'));
 
@@ -103,7 +105,7 @@ export default function PostList({ searchTerm }: PostListProps) {
         <div className="space-y-6">
             {/* Tag Filter Section */}
             <div>
-                <h3 className="text-lg text-slate-800 font-semibold mb-2">Filter by Tag:</h3>
+                <h3 className="text-lg text-slate-800 font-semibold mb-2">Explore by Tag:</h3>
                 <TagList
                     selectedTag={selectedTag}
                     onTagSelect={setSelectedTag}
@@ -111,17 +113,17 @@ export default function PostList({ searchTerm }: PostListProps) {
             </div>
 
             {/* Post List Section */}
-            <div className="space-y-4">
+            <div>
                 {posts?.map((post: Post) => (
                     <Link href={post.url} key={post._raw.flattenedPath}>
                         <article
                             className="p-4 border rounded-lg hover:shadow-md transition-shadow group my-4"
                         >
-                            <h2 className="text-xl font-bold text-slate-800 group-hover:text-blue-600 transition-colors">{post.title}</h2>
+                            <h2 className="text-xl font-bold text-slate-800 group-hover:text-[#FF6F61]/80 transition-colors">{post.title}</h2>
                             <p className="text-gray-600">{format(new Date(post.date), 'MMMM d, yyyy')}</p>
                             <HighlightedText text={post.summary || ''} term={searchTerm} />
                             {searchTerm && post.body?.raw && (
-                                <div className="mt-2 text-sm text-gray-600">
+                                <div className="mt-6 border-t pt-4 text-sm text-gray-600">
                                     <span className="font-medium">Found in content: </span>
                                     <HighlightedText
                                         text={extractSnippet(post.body.raw, searchTerm)}
