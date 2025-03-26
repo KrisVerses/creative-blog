@@ -1,21 +1,48 @@
+'use client';
+
 import { allProjects, allLogs, allPosts } from "contentlayer/generated";
 import Image from "next/image";
 import Link from "next/link";
 import { format } from "date-fns";
+import { getSortedProjects, getSortedLogs, getSortedPosts } from "@/lib/utils";
+import { useState, useMemo } from "react";
 
 export default function ProjectPage() {
+    // State for filters
+    const [statusFilter, setStatusFilter] = useState<'all' | 'in-progress' | 'completed'>('all');
+    const [sortOrder, setSortOrder] = useState<'newest' | 'oldest'>('newest');
+
     // Get the most recently updated project as featured
-    const featuredProject = allProjects[0];
+    const featuredProject = getSortedProjects(allProjects)[0];
 
     // Get related logs for featured project
-    const relatedLogs = allLogs
-        .filter(log => log.projectId === featuredProject._raw.sourceFileName.replace(".mdx", ""))
-        .slice(0, 3);
+    const relatedLogs = getSortedLogs(
+        allLogs.filter(log => log.projectId === featuredProject._raw.sourceFileName.replace(".mdx", ""))
+    ).slice(0, 3);
 
     // Get related posts for featured project
-    const relatedPosts = allPosts
-        .filter(post => post.relatedProjects?.includes(featuredProject._raw.sourceFileName.replace(".mdx", "")))
-        .slice(0, 2);
+    const relatedPosts = getSortedPosts(
+        allPosts.filter(post => post.relatedProjects?.includes(featuredProject._raw.sourceFileName.replace(".mdx", "")))
+    ).slice(0, 2);
+
+    // Filter and sort projects
+    const filteredProjects = useMemo(() => {
+        let projects = [...allProjects];
+
+        // Apply status filter
+        if (statusFilter !== 'all') {
+            projects = projects.filter(project => project.status === statusFilter);
+        }
+
+        // Apply sorting
+        projects.sort((a, b) => {
+            const dateA = new Date(a.date).getTime();
+            const dateB = new Date(b.date).getTime();
+            return sortOrder === 'newest' ? dateB - dateA : dateA - dateB;
+        });
+
+        return projects;
+    }, [statusFilter, sortOrder]);
 
     return (
         <div className="max-w-7xl mx-auto p-4 space-y-12">
@@ -96,11 +123,11 @@ export default function ProjectPage() {
                                         <Link
                                             href={`/log/${log._raw.sourceFileName.replace(".mdx", "")}`}
                                             key={log._id}
-                                            className="block p-4 border rounded-lg hover:border-[#FF6F61]/50 transition-colors relative"
+                                            className="block p-4 border rounded-lg hover:border-[#FF6F61]/50 transition-colors relative group"
                                         >
                                             <div className="absolute left-[-2.25rem] top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-[#FF6F61] ring-4 ring-white shadow-md shadow-[#FF6F61]/20" />
                                             <p className="text-sm text-gray-500">Day {log.day}</p>
-                                            <h4 className="font-medium text-slate-800">{log.title}</h4>
+                                            <h4 className="font-medium text-slate-800 group-hover:text-[#FF6F61] transition-colors">{log.title}</h4>
                                             <p className="text-sm text-gray-600 mt-1">{log.progress}</p>
                                         </Link>
                                     ))}
@@ -117,12 +144,17 @@ export default function ProjectPage() {
                                         <Link
                                             href={`/post/${post._raw.sourceFileName.replace(".mdx", "")}`}
                                             key={post._id}
-                                            className="block p-4 border rounded-lg hover:border-[#FF6F61]/50 transition-colors"
+                                            className="block p-4 border rounded-lg hover:border-[#FF6F61]/50 transition-colors group"
                                         >
-                                            <h4 className="font-medium text-slate-800">{post.title}</h4>
-                                            <p className="text-sm text-gray-500 mt-1">
-                                                {format(new Date(post.date), 'MMM d, yyyy')}
-                                            </p>
+                                            <h4 className="font-medium text-slate-800 group-hover:text-[#FF6F61] transition-colors">{post.title}</h4>
+                                            <div className="flex items-center gap-2 text-gray-600 mt-1">
+                                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                                    />
+                                                </svg>
+                                                <span>{format(new Date(post.date), 'MMMM d, yyyy')}</span>
+                                            </div>
                                         </Link>
                                     ))}
                                 </div>
@@ -140,19 +172,27 @@ export default function ProjectPage() {
                 <div className="flex items-center justify-between mb-8">
                     <h2 className="text-3xl font-bold">All Projects</h2>
                     <div className="flex gap-4">
-                        <select className="px-3 py-2 border rounded-md">
+                        <select
+                            value={statusFilter}
+                            onChange={(e) => setStatusFilter(e.target.value as typeof statusFilter)}
+                            className="px-3 py-2 border rounded-lg text-gray-600 hover:border-[#FF6F61]/50 transition-colors focus:outline-none focus:ring-2 focus:ring-[#FF6F61]/20"
+                        >
                             <option value="all">All Projects</option>
                             <option value="in-progress">In Progress</option>
                             <option value="completed">Completed</option>
                         </select>
-                        <select className="px-3 py-2 border rounded-md">
+                        <select
+                            value={sortOrder}
+                            onChange={(e) => setSortOrder(e.target.value as typeof sortOrder)}
+                            className="px-3 py-2 border rounded-lg text-gray-600 hover:border-[#FF6F61]/50 transition-colors focus:outline-none focus:ring-2 focus:ring-[#FF6F61]/20"
+                        >
                             <option value="newest">Newest First</option>
                             <option value="oldest">Oldest First</option>
                         </select>
                     </div>
                 </div>
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {allProjects.map((project) => (
+                    {filteredProjects.map((project) => (
                         <Link
                             href={`/project/${project._raw.sourceFileName.replace(".mdx", "")}`}
                             key={project._id}
@@ -166,7 +206,7 @@ export default function ProjectPage() {
                                 className="object-cover"
                             />
                             <div className="absolute inset-0 p-6 flex flex-col justify-end bg-gradient-to-t from-slate-900/90 via-slate-900/50 to-transparent">
-                                <h3 className="text-xl font-bold text-white mb-2">{project.title}</h3>
+                                <h3 className="text-xl font-bold text-white mb-2 group-hover:text-[#FF6F61] transition-colors">{project.title}</h3>
                                 <p className="text-slate-200 text-sm line-clamp-2">{project.summary}</p>
 
                                 <div className="flex gap-2 mt-3">

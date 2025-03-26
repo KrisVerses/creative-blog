@@ -126,7 +126,7 @@ export default function Navbar() {
             </div>
 
             {/* Hamburger menu */}
-            <div className="bloock md:hidden relative">
+            <div className="bloock md:hidden relative z-10">
                 <button className="text-2xl" onClick={toggleMenu}>
                     {isOpen ? openIcon : closedIcon}
                 </button>
