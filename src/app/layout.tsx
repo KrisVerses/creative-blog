@@ -4,7 +4,7 @@ import "./globals.css";
 import Providers from "./providers";
 import Navbar from "@/components/ui/Navbar";
 import Footer from "@/components/ui/Footer";
-
+import CategoryList from "@/components/ui/CategoryList";
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
@@ -51,6 +51,7 @@ export default function RootLayout({
         {/* Header */}
         <header>
           <Navbar />
+          <CategoryList />
         </header>
 
         {/* Main */}

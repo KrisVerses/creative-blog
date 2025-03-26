@@ -1,0 +1,114 @@
+---
+title: "Day 5 - Understanding Next.js Server Components and CMS Architecture"
+date: "2025-03-24T12:00:00-05:00"
+projectId: "creative-blog"
+day: 5
+progress: "Deepened understanding of Next.js server components, implemented proper CMS architecture, and improved content organization."
+challenges: [
+    "Understanding when to use 'use client' directive",
+    "Organizing content types between posts, logs, and projects",
+    "Implementing proper date handling with timezones",
+    "Learning when React Query is necessary vs overkill"
+]
+---
+
+# Day 5: Server Components and Content Architecture
+
+## Key Learnings
+
+### Server vs Client Components
+
+<Card>
+Today's biggest insight was about Next.js server components. By default, all components are server components unless they:
+1. Use client-side features (hooks, browser APIs)
+2. Are explicitly marked with 'use client'
+3. Are imported by another client component
+
+Example: Our `HomeIndex.tsx` doesn't need 'use client' because it only handles static content rendering.
+</Card>
+
+<Tip>
+Keep components as server components when possible for better performance and smaller JavaScript bundles.
+</Tip>
+
+### React Query Usage
+
+<Card>
+Initially implemented React Query for project data, but learned it's unnecessary for our static content. 
+
+**Use React Query when you need:**
+- Real-time/frequently changing data
+- User-specific data after authentication
+- Automatic background updates
+- Complex API response caching
+- Loading/error state management
+
+**Don't use React Query when:**
+- Data is static (like our MDX content)
+- Content rarely changes
+- Data is the same for all users
+- No API calls needed
+</Card>
+
+```typescript
+// Before: Unnecessary use of React Query
+const { data: projects } = useQuery({
+    queryKey: ['projects'],
+    queryFn: () => allProjects
+});
+
+// After: Direct use of ContentLayer data
+const projects = allProjects;
+```
+
+<Warning>
+Choose data fetching strategies based on your data's nature. Static content (like MDX) doesn't need client-side data fetching libraries.
+</Warning>
+
+### Content Organization
+
+<Steps>
+1. **Separated Content Types**
+   - Projects: Main project information
+   - Logs: Daily progress updates
+   - Posts: Standalone articles
+
+2. **Content Relationships**
+   - Logs are tied to projects via `projectId`
+   - Posts can reference multiple projects
+   - Projects can have multiple associated logs
+</Steps>
+
+### Date Handling
+
+<Warning>
+Always specify timezone information in date strings to avoid inconsistencies across different environments.
+Example: `2025-03-24T12:00:00-05:00`
+</Warning>
+
+## Technical Implementations
+
+```typescript
+// Example of a server component
+function StaticComponent() {
+    return <div>No 'use client' needed</div>
+}
+
+// Example of when 'use client' is needed
+'use client'
+function InteractiveComponent() {
+    const [state, setState] = useState()
+    return <div>Needs client-side features</div>
+}
+```
+
+## Next Steps
+
+1. Implement project-log relationships in the UI
+2. Add interactive features where needed
+3. Improve content organization
+4. Document best practices learned
+
+<Tip>
+Remember: Always question whether a component truly needs to be a client component before adding 'use client'.
+</Tip> 

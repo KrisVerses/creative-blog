@@ -1,5 +1,7 @@
+import { useState } from 'react'
+import { Post, allPosts } from 'contentlayer/generated'
+import { getSortedPosts } from '@/lib/utils'
 import { useQuery } from '@tanstack/react-query'
-import { allPosts, Post } from 'contentlayer/generated'
 
 /**
  * Custom hook for managing blog posts with search and filtering capabilities
@@ -20,7 +22,7 @@ import { allPosts, Post } from 'contentlayer/generated'
 const fetchPosts = async (): Promise<Post[]> => {
     // In a real app, this would be an API call
     // For now, we're using the static content from contentlayer
-    return allPosts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    return getSortedPosts(allPosts)
 }
 
 /**
@@ -62,6 +64,16 @@ const searchPosts = (posts: Post[], searchTerm: string): Post[] => {
  *   - error: Any error that occurred
  */
 export function usePosts(selectedTag: string | null = null, searchTerm: string = '') {
+    const [posts, setPosts] = useState<Post[]>([])
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState<Error | null>(null)
+
+    const fetchPosts = async (): Promise<Post[]> => {
+        // In a real app, this would be an API call
+        // For now, we're using the static content from contentlayer
+        return getSortedPosts(allPosts)
+    }
+
     return useQuery({
         // Unique key for this query - changes when filters change
         queryKey: ['posts', selectedTag, searchTerm],

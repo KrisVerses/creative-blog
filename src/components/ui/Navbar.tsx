@@ -14,6 +14,7 @@ export default function Navbar() {
     };
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        console.log(searchTerm);
         e.preventDefault();
         if (searchTerm.trim()) {
             router.push(`/post?search=${encodeURIComponent(searchTerm)}`);
@@ -34,7 +35,7 @@ export default function Navbar() {
     );
 
     return (
-        <nav className="max-w-7xl mx-auto flex justify-around items-center p-4">
+        <nav className="flex justify-around items-center p-4">
             <div className="flex items-center gap-4">
                 <Link href="/" className="text-2xl font-bold">
                     <img src="/brandImages/4.jpg" alt="logo" className="w-16 h-16" />
@@ -67,8 +68,8 @@ export default function Navbar() {
             </div>
 
             {/* a navbar section with a search bar */}
-            <div className="flex items-center gap-4 hidden sm:flex">
-                <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 hidden md:flex">
+                <div className="flex items-center gap-6">
                     <ul className="flex items-center gap-4">
                         <li>
                             <Link
@@ -80,18 +81,18 @@ export default function Navbar() {
                         </li>
                         <li>
                             <Link
-                                href="/post"
-                                className="transform-gpu relative text-gray-400 hover:text-[#FF6F61] inline-block transition-all after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 hover:after:w-full after:bg-[#FF6F61] after:transition-all after:duration-300"
-                            >
-                                Posts
-                            </Link>
-                        </li>
-                        <li>
-                            <Link
                                 href="/project"
                                 className="transform-gpu relative text-gray-400 hover:text-[#FF6F61] inline-block transition-all after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 hover:after:w-full after:bg-[#FF6F61] after:transition-all after:duration-300"
                             >
                                 Projects
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                href="/post"
+                                className="transform-gpu relative text-gray-400 hover:text-[#FF6F61] inline-block transition-all after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 hover:after:w-full after:bg-[#FF6F61] after:transition-all after:duration-300"
+                            >
+                                Posts
                             </Link>
                         </li>
                     </ul>
@@ -125,7 +126,7 @@ export default function Navbar() {
             </div>
 
             {/* Hamburger menu */}
-            <div className="bloock sm:hidden relative">
+            <div className="bloock md:hidden relative">
                 <button className="text-2xl" onClick={toggleMenu}>
                     {isOpen ? openIcon : closedIcon}
                 </button>
@@ -134,7 +135,9 @@ export default function Navbar() {
                         <Link href="/" className="text-gray-400 hover:text-gray-500 transition-colors hover:font-semibold duration-300 block">Home</Link>
                         <Link href="/post" className="text-gray-400 hover:text-gray-500 transition-colors hover:font-semibold duration-300 block">Posts</Link>
                         <Link href="/project" className="text-gray-400 hover:text-gray-500 transition-colors hover:font-semibold duration-300 block">Projects</Link>
-                        <input type="text" placeholder="Search" className="border border-gray-300 rounded-md p-2" />
+                        <form onSubmit={handleSubmit}>
+                            <input type="text" onChange={(e) => setSearchTerm(e.target.value)} value={searchTerm} placeholder="Search" className="border border-gray-300 rounded-md p-2" />
+                        </form>
                     </div>
                 )}
             </div>

@@ -6,9 +6,13 @@ import rehypePrism from "rehype-prism-plus";
 // This file is used to configure Contentlayer, a content SDK that transforms content into type-safe data
 // that can be easily imported into your Next.js application
 
+const tagValidation = (tags: string[]) =>
+  tags.every((tag) => tag.length <= 30) ||
+  "Tags must be 30 characters or less";
+
 export const Post = defineDocumentType(() => ({
   name: "Post",
-  filePathPattern: "**/*.mdx",
+  filePathPattern: "post/**/*.mdx",
   contentType: "mdx" as const,
   fields: {
     title: { type: "string", required: true },
@@ -17,12 +21,11 @@ export const Post = defineDocumentType(() => ({
       type: "list",
       of: { type: "string" },
       required: true,
-      validation: (tags: string[]) =>
-        tags.every((tag) => tag.length <= 30) || // Checks if ALL tags are 30 chars or less
-        "Tags must be 30 characters or less", // Error message returned if validation fails
+      validation: tagValidation, // Error message returned if validation fails
     },
-    summary: { type: "string", required: false },
     readingTime: { type: "number", required: true },
+    summary: { type: "string", required: true },
+    relatedProjects: { type: "list", of: { type: "string" } },
   },
   // Define computed fields that will be added to each document
   computedFields: {
@@ -37,12 +40,74 @@ export const Post = defineDocumentType(() => ({
       // returns: a URL string in format '/post/[path]'
       resolve: (doc) => `/post/${doc._raw.sourceFileName.replace('.mdx', '')}`,
     },
+    slug: {
+      type: "string",
+      resolve: (doc) => doc._raw.sourceFileName.replace(/\.mdx$/, "")
+    }
   },
+}));
+
+export const Project = defineDocumentType(() => ({
+  name: "Project",
+  filePathPattern: "projects/**/*.mdx",
+  contentType: "mdx" as const,
+  fields: {
+    title: { type: "string", required: true },
+    date: { type: "date", required: true },
+    summary: { type: "string", required: true },
+    image: { type: "string", required: false }, // Project preview image path
+    status: {
+      type: "enum",
+      options: ["in-progress", "completed", "planned"],
+      required: true
+    },
+    technologies: { type: "list", of: { type: "string" }, required: true },
+    github: { type: "string" },
+    demo: { type: "string" }
+  },
+  computedFields: {
+    url: {
+      type: "string",
+      resolve: (doc) => `/project/${doc._raw.sourceFileName.replace('.mdx', '')}`,
+    },
+    slug: {
+      type: "string",
+      resolve: (doc) => doc._raw.sourceFileName.replace(/\.mdx$/, "")
+    }
+  },
+}));
+
+export const Log = defineDocumentType(() => ({
+  name: "Log",
+  filePathPattern: "logs/**/*.mdx",
+  contentType: "mdx" as const,
+  fields: {
+    title: { type: "string", required: true },
+    date: { type: "date", required: true },
+    projectId: { type: "string", required: true },
+    day: { type: "number", required: true },
+    progress: { type: "string", required: true },
+    challenges: { type: "list", of: { type: "string" } }
+  },
+  computedFields: {
+    slug: {
+      type: "string",
+      resolve: (doc) => doc._raw.sourceFileName.replace(/\.mdx$/, "")
+    },
+    project: {
+      type: "nested",
+      resolve: async (doc) => {
+        // Reference to related project
+        const projectSlug = doc.projectId;
+        // You would implement logic here to fetch the related project
+      }
+    }
+  }
 }));
 
 export default makeSource({
   contentDirPath: "content", // Directory where your MDX files are stored
-  documentTypes: [Post], // Schema/types that your content should match
+  documentTypes: [Project, Log, Post], // Schema/types that your content should match
   mdx: {
     rehypePlugins: [
       // rehypeSlug:

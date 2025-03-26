@@ -12,6 +12,8 @@ import { type ClassValue, clsx } from "clsx";
 // It handles cases where classes might override each other
 import { twMerge } from "tailwind-merge";
 
+import { Post } from "contentlayer/generated";
+
 /**
  * Combines multiple class names into a single string
  * Handles conditional classes and resolves Tailwind CSS conflicts
@@ -30,4 +32,8 @@ import { twMerge } from "tailwind-merge";
  */
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
+}
+
+export function getSortedPosts(posts: Post[]) {
+    return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 } 
