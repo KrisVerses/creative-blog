@@ -4,6 +4,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useState } from "react";
+import { ColorProvider } from "@/context/ColorContext";
 
 // Create a new QueryClient instance that will manage caching, retries, and updates
 // const queryClient = new QueryClient({
@@ -33,7 +34,9 @@ export default function Providers({ children }: { children: React.ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {children}
+      <ColorProvider>
+        {children}
+      </ColorProvider>
       <ReactQueryDevtools initialIsOpen={false} /> {/* React Query Devtools  is a tool for debugging and inspecting the state of your queries */}
     </QueryClientProvider>
   );

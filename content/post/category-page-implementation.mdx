@@ -1,0 +1,106 @@
+---
+title: 'Category Page Implementation Guide'
+date: '2024-03-26T12:00:00-05:00'
+category: 'coding'
+tags: ['react', 'typescript', 'nextjs', 'accessibility', 'responsive-design']
+summary: 'A comprehensive guide detailing the implementation of a dynamic Category page with search functionality, responsive design, and accessibility features in a Next.js application.'
+image: 'https://images.unsplash.com/photo-1471107340929-a87cd0f5b5f3?q=80&w=1973&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+readingTime: 10
+---
+
+# Category Page Implementation
+
+## Overview
+The Category page is a dynamic, client-side rendered page that displays posts and projects filtered by category. It features a modern design with category-specific styling, search functionality, and responsive layouts.
+
+## Key Features
+
+### 1. Category-Specific Styling
+- Uses a context-based color system (`useColors` hook) for category-specific theming
+- Implements a unique marker-style highlight effect for category titles
+- Dynamic background and accent colors based on the selected category
+
+### 2. Search and Filtering
+- Real-time search functionality with highlighted matching terms
+- Filters both posts and projects simultaneously
+- Multi-word search support with case-insensitive matching
+- Visual feedback for search results with counters
+
+### 3. Content Organization
+- Separate sections for Posts and Projects
+- Grid-based layout that's responsive across different screen sizes
+- Image support with hover animations
+- Empty state handling with contextual messages
+
+## Technical Implementation
+
+### Category Context
+```typescript
+type CategorySlug = 'coding' | 'design' | 'health' | 'life' | 'productivity' | 'self-help' | 'travel' | 'writing';
+```
+- Strictly typed category system
+- Context-based color management for consistent theming
+- Automatic cleanup on unmount
+
+### Search Implementation
+```typescript
+const matchesSearchTerms = (text: string) => {
+    if (searchTerms.length === 0) return true;
+    const normalizedText = text.toLowerCase();
+    return searchTerms.every(term => normalizedText.includes(term));
+};
+```
+- Efficient search using `useMemo` for performance
+- Multi-term search with all terms required to match
+- Searches both titles and summaries
+
+### Content Cards
+- Consistent card design across posts and projects
+- Interactive hover states with smooth transitions
+- Accessible markup with ARIA labels and roles
+- Image optimization using Next.js Image component
+
+### Statistics Display
+- Real-time content statistics
+- Four key metrics:
+  1. Total Posts
+  2. Total Projects
+  3. Filtered Posts
+  4. Filtered Projects
+- Responsive grid layout for stats display
+
+## Accessibility Features
+- ARIA labels for interactive elements
+- Screen reader support for search and filtering
+- Live regions for dynamic content updates
+- Semantic HTML structure
+- Keyboard navigation support
+
+## Responsive Design
+- Mobile-first approach
+- Breakpoint-based layouts:
+  - Single column on mobile
+  - Two columns on tablet
+  - Three columns on desktop
+- Flexible grid system for content cards
+- Adaptive typography and spacing
+
+## Performance Considerations
+- Memoized content filtering
+- Optimized image loading
+- Client-side search to minimize server load
+- Efficient DOM updates using React's virtual DOM
+
+## Future Enhancements
+1. Advanced filtering options
+2. Sort functionality
+3. Pagination for large content sets
+4. Category-specific meta descriptions
+5. Enhanced animation effects
+
+## Usage Example
+```typescript
+<CategoryPage params={{ slug: 'coding' }} />
+```
+
+This implementation provides a robust foundation for displaying categorized content while maintaining performance, accessibility, and user experience best practices. 

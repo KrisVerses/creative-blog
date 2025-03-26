@@ -17,7 +17,7 @@ export default function ProjectPage() {
 
     // Get related logs for featured project
     const relatedLogs = getSortedLogs(
-        allLogs.filter(log => log.projectId === featuredProject._raw.sourceFileName.replace(".mdx", ""))
+        allLogs.filter(log => log.projectId === featuredProject?._raw.sourceFileName.replace(".mdx", ""))
     ).slice(0, 3);
 
     // Get related posts for featured project
@@ -51,8 +51,8 @@ export default function ProjectPage() {
                 <h1 className="text-4xl font-bold mb-8">Featured Project</h1>
                 <div className="relative aspect-video w-full mb-8">
                     <Image
-                        src={featuredProject.image || "/brandImages/3.jpg"}
-                        alt={featuredProject.title}
+                        src={featuredProject?.image || "/brandImages/3.jpg"}
+                        alt={featuredProject?.title}
                         fill
                         className="object-cover rounded-lg"
                     />
@@ -61,14 +61,14 @@ export default function ProjectPage() {
                 <div className="grid md:grid-cols-2 gap-8">
                     {/* Project Details */}
                     <div className="space-y-4">
-                        <Link href={`/project/${featuredProject._raw.sourceFileName.replace(".mdx", "")}`}>
-                            <h2 className="text-3xl font-bold text-slate-800">{featuredProject.title}</h2>
+                        <Link href={`/project/${featuredProject?._raw.sourceFileName.replace(".mdx", "")}`}>
+                            <h2 className="text-3xl font-bold text-slate-800">{featuredProject?.title}</h2>
                         </Link>
-                        <p className="text-gray-600">{featuredProject.summary}</p>
+                        <p className="text-gray-600">{featuredProject?.summary}</p>
 
                         {/* Tech Stack */}
                         <div className="flex gap-2 flex-wrap">
-                            {featuredProject.technologies.map((tech) => (
+                            {featuredProject?.technologies.map((tech) => (
                                 <span key={tech} className="flex items-center gap-1.5 bg-slate-100 px-3 py-1 rounded-full">
                                     <span className="text-sm text-slate-700">{tech}</span>
                                 </span>
@@ -77,19 +77,19 @@ export default function ProjectPage() {
 
                         {/* Status Badge */}
                         <div className="inline-block">
-                            <span className={`px-3 py-1 rounded-full text-sm ${featuredProject.status === 'completed' ? 'bg-green-100 text-green-800' :
-                                featuredProject.status === 'in-progress' ? 'bg-blue-100 text-blue-800' :
+                            <span className={`px-3 py-1 rounded-full text-sm ${featuredProject?.status === 'completed' ? 'bg-green-100 text-green-800' :
+                                featuredProject?.status === 'in-progress' ? 'bg-blue-100 text-blue-800' :
                                     'bg-yellow-100 text-yellow-800'
                                 }`}>
-                                {featuredProject.status}
+                                {featuredProject?.status}
                             </span>
                         </div>
 
                         {/* Links */}
                         <div className="flex gap-4">
-                            {featuredProject.github && (
+                            {featuredProject?.github && (
                                 <Link
-                                    href={featuredProject.github}
+                                    href={featuredProject?.github}
                                     className="inline-flex items-center gap-2 px-4 py-2 bg-[#FF6F61] text-white rounded-lg hover:bg-[#FF6F61]/90 transition-colors shadow-sm hover:shadow-md"
                                 >
                                     <span>View Source</span>
@@ -98,9 +98,9 @@ export default function ProjectPage() {
                                     </svg>
                                 </Link>
                             )}
-                            {featuredProject.demo && (
+                            {featuredProject?.demo && (
                                 <Link
-                                    href={featuredProject.demo}
+                                    href={featuredProject?.demo}
                                     className="inline-flex items-center gap-2 px-4 py-2 bg-[#FF6F61] text-white rounded-lg hover:bg-[#FF6F61]/90 transition-colors shadow-sm hover:shadow-md"
                                 >
                                     <span>Live Demo</span>

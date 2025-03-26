@@ -5,6 +5,7 @@ import Providers from "./providers";
 import Navbar from "@/components/ui/Navbar";
 import Footer from "@/components/ui/Footer";
 import CategoryList from "@/components/ui/CategoryList";
+
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
@@ -47,23 +48,23 @@ export default function RootLayout({
   return (
     <html lang="en" className="light">
       <body className={`${inter.variable} min-h-screen flex flex-col`}>
+        <Providers>
+          {/* Header */}
+          <header>
+            <Navbar />
+            <CategoryList />
+          </header>
 
-        {/* Header */}
-        <header>
-          <Navbar />
-          <CategoryList />
-        </header>
+          {/* Main */}
+          <main className="flex-grow">
+            {children}
+          </main>
 
-        {/* Main */}
-        <main className="flex-grow">
-          <Providers>{children}</Providers>
-        </main>
-
-        {/* Footer */}
-        <footer>
-          <Footer />
-        </footer>
-
+          {/* Footer */}
+          <footer>
+            <Footer />
+          </footer>
+        </Providers>
       </body>
     </html>
   );

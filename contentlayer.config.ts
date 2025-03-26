@@ -26,6 +26,12 @@ export const Post = defineDocumentType(() => ({
     readingTime: { type: "number", required: true },
     summary: { type: "string", required: true },
     relatedProjects: { type: "list", of: { type: "string" } },
+    category: {
+      type: 'string',
+      required: true,
+      options: ['coding', 'design', 'health', 'life', 'productivity', 'self-help', 'travel', 'writing']
+    },
+    image: { type: "string", required: false } // Optional cover image for posts
   },
   // Define computed fields that will be added to each document
   computedFields: {
@@ -55,7 +61,7 @@ export const Project = defineDocumentType(() => ({
     title: { type: "string", required: true },
     date: { type: "date", required: true },
     summary: { type: "string", required: true },
-    image: { type: "string", required: false }, // Project preview image path
+    image: { type: "string", required: false }, // Project preview image
     status: {
       type: "enum",
       options: ["in-progress", "completed", "planned"],
@@ -63,7 +69,12 @@ export const Project = defineDocumentType(() => ({
     },
     technologies: { type: "list", of: { type: "string" }, required: true },
     github: { type: "string" },
-    demo: { type: "string" }
+    demo: { type: "string" },
+    category: {
+      type: 'string',
+      required: true,
+      options: ['coding', 'design', 'health', 'life', 'productivity', 'self-help', 'travel', 'writing']
+    }
   },
   computedFields: {
     url: {

@@ -2,6 +2,8 @@ import { Post } from "contentlayer/generated";
 import Link from "next/link";
 import { format } from "date-fns";
 import TagList from "./TagList";
+import { useColors } from '@/context/ColorContext';
+import { CategorySlug } from '@/types';
 
 interface PostCardProps {
     post: Post;
@@ -49,21 +51,46 @@ function truncateAtWord(text: string, maxLength: number): string {
  *    - Complex hover animations that affect multiple elements
  */
 const PostCard = ({ post }: PostCardProps) => {
+    const { categoryStyles } = useColors();
+    const styles = categoryStyles[post.category as CategorySlug];
+
     return (
         <>
-            <li className="group relative flex flex-col space-y-3">
+            <li className="relative flex flex-col space-y-3">
                 {/* Date */}
                 <p className="text-sm text-gray-500">
                     {format(new Date(post.date), 'MMMM d, yyyy')}
                 </p>
 
                 {/* Title - Made clickable with hover effect */}
-                <Link
-                    href={post.url}
-                    className="group-hover:text-blue-600 transition-colors"
-                >
-                    <h2 className="text-xl font-semibold tracking-tight">
-                        {post.title}
+                <Link href={post.url} className="block">
+                    <h2 className="relative inline-block mb-3 group">
+                        <span className={`
+                            relative z-10 text-xl font-semibold 
+                            text-slate-800
+                            transition-colors duration-300
+                            ${styles.hover}
+                        `}>
+                            {post.title}
+                        </span>
+                        {/* Category-colored background that appears on hover */}
+                        <span
+                            className={`
+                                absolute inset-0 
+                                ${styles.accent}
+                                opacity-0
+                                group-hover:opacity-15
+                                transition-all duration-300
+                                rounded
+                            `}
+                            style={{
+                                transform: 'skew(-12deg)',
+                                top: '0%',
+                                height: '100%',
+                                left: '-4px',
+                                right: '-4px'
+                            }}
+                        />
                     </h2>
                 </Link>
 
@@ -74,12 +101,25 @@ const PostCard = ({ post }: PostCardProps) => {
                     </p>
                 )}
 
-                {/* Read more link - provides additional click target */}
+                {/* Read more link with app accent color */}
                 <Link
                     href={post.url}
-                    className="text-sm text-blue-600 hover:text-blue-800 transition-colors mt-2"
+                    className="mt-4 inline-flex items-center text-sm font-medium text-gray-600 hover:text-[#FF6F61] transition-colors"
                 >
-                    Read more →
+                    Read more
+                    <svg
+                        className="ml-1 w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 5l7 7-7 7"
+                        />
+                    </svg>
                 </Link>
                 <TagList selectedTag={null} onTagSelect={() => { }} />
             </li>
