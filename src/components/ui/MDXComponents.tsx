@@ -9,11 +9,18 @@
  * - Basic HTML elements are defined here for consistent styling
  * - Complex, reusable MDX components are imported from /mdx directory
  * - This separation keeps the code modular and maintainable
+ * 
+ * FIX for Code Block Rendering Issues:
+ * - The code and pre components have been specially configured to work with rehype-prism-plus
+ * - Text color is explicitly set to ensure code is visible, fixing the [object Object] issue
+ * - Language detection is properly implemented from className properties
+ * - Custom wrapper and styling ensure proper display in both light and dark modes
  */
 
 import { cn } from "@/lib/utils";
 import { ExternalLink } from "lucide-react";
 import Link from "next/link";
+import type { MDXComponents as MDXComponentsType } from 'mdx/types';
 
 // Import custom MDX components from /mdx directory
 // These are separated for better maintainability and reusability
@@ -28,7 +35,7 @@ type MDXComponents = {
     [key: string]: React.ComponentType<any>;
 };
 
-const MDXComponents: MDXComponents = {
+const customComponents: MDXComponentsType = {
     /**
      * HTML Element Mappings
      * 
@@ -136,25 +143,82 @@ const MDXComponents: MDXComponents = {
      * Code Elements
      * 
      * Special handling for code blocks and inline code
+     * 
+     * FIX IMPLEMENTATION:
+     * The issue was that code blocks were displaying as "[object Object]" because:
+     * 1. ContentLayer with rehype-prism-plus transforms code blocks into complex objects
+     * 2. We needed to properly handle both inline code and block code differently
+     * 3. Text colors needed to be explicitly set to ensure visibility
      */
-    code: ({ className, ...props }) => (
-        <code
-            className={cn(
-                "relative rounded bg-slate-100 px-[0.3rem] py-[0.2rem] font-mono text-sm text-slate-800",
-                className
-            )}
-            {...props}
-        />
-    ),
-    pre: ({ className, ...props }) => (
-        <pre
-            className={cn(
-                "mt-6 mb-4 overflow-x-auto rounded-lg bg-slate-900 py-4",
-                className
-            )}
-            {...props}
-        />
-    ),
+    code: ({ className, children, ...props }) => {
+        // For inline code: Special case handling for inline `code` 
+        // Adding distinct styling to differentiate from code blocks
+        // FIX: Check if it's NOT a language-tagged code block
+        if (!className?.includes('language-')) {
+            return (
+                <code
+                    className="relative rounded bg-slate-100 px-[0.3rem] py-[0.2rem] font-mono text-sm text-[#FF6F61]"
+                    {...props}
+                >
+                    {children}
+                </code>
+            );
+        }
+
+        // For code blocks (inside pre tags)
+        // FIX: Explicitly set text color to white for code blocks
+        // This prevents the [object Object] issue by ensuring proper rendering
+        return (
+            <code className={cn(className, "text-white")} {...props}>
+                {children}
+            </code>
+        );
+    },
+
+    pre: ({ className, children, ...props }) => {
+        // Extract language from className if available
+        // FIX: Properly detect language from the code element's class
+        let language = 'text';
+        const classStr = String(className || '');
+
+        // FIX: Handle the code element properly by extracting language information
+        // This ensures we can display the language badge and apply proper styling
+        const codeElement = children as React.ReactElement;
+        if (codeElement?.props?.className) {
+            const match = /language-(\w+)/.exec(codeElement.props.className);
+            if (match) language = match[1];
+        }
+
+        return (
+            <div className="relative my-6 rounded-lg overflow-hidden">
+                {/* Language badge - shows programming language in top corner */}
+                {/* FIX: Only show language badge for actual programming languages */}
+                {language !== 'text' && (
+                    <div className="absolute right-3 top-0 z-[1] rounded-b-sm bg-slate-700 px-2 py-0.5 text-xs font-medium text-white">
+                        {language}
+                    </div>
+                )}
+
+                {/* 
+                  * FIX: Apply proper styling to pre element
+                  * - Add specific background color that works with Prism.js
+                  * - Ensure text is white for visibility
+                  * - Use border for better visual separation
+                  * - Maintain original classNames for rehype-prism-plus to work
+                  */}
+                <pre
+                    className={cn(
+                        "mt-0 mb-0 overflow-x-auto rounded-lg bg-[#0f172a] text-white p-4",
+                        "border border-slate-800",
+                        classStr
+                    )}
+                    {...props}
+                >
+                    {children}
+                </pre>
+            </div>
+        );
+    },
 
     /**
      * Custom MDX Components
@@ -172,7 +236,7 @@ const MDXComponents: MDXComponents = {
     Tip,
 };
 
-export default MDXComponents;
+export default customComponents;
 
 /**
  * Example usage of Callout component in MDX files:

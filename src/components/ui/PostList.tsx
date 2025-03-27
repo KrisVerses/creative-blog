@@ -66,7 +66,7 @@ function extractSnippet(text: string, term: string, contextLength: number = 100)
  * @returns JSX with highlighted text
  */
 function HighlightedText({ text, term }: { text: string; term: string }) {
-    if (!term) return <p className="mt-4 mb-2">{text}</p>;
+    if (!term) return <p className="mt-4 mb-2 text-gray-800/90">{text}</p>;
 
     const parts = text.split(new RegExp(`(${term})`, 'gi'));
 

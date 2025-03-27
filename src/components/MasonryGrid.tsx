@@ -88,13 +88,22 @@ const MasonryGrid = ({ items, category, searchQuery = '' }: MasonryGridProps) =>
 
                             {/* Background highlight effect */}
                             <span
-                                className={`absolute inset-0 ${styles.accent} opacity-0 group-hover:opacity-15 transition-all duration-300 rounded`}
+                                className={`
+                                    absolute inset-0 
+                                    ${styles.accent} 
+                                    opacity-0
+                                    group-hover:opacity-15
+                                    group-hover:animate-highlight
+                                    rounded
+                                `}
                                 style={{
                                     transform: 'skew(-12deg)',
                                     top: '0%',
                                     height: '100%',
                                     left: '-4px',
-                                    right: '-4px'
+                                    right: '-4px',
+                                    clipPath: 'inset(0 100% 0 0)',
+                                    WebkitClipPath: 'inset(0 100% 0 0)'
                                 }}
                             />
                         </h3>

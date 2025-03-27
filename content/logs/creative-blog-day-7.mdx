@@ -136,4 +136,68 @@ function highlightText(text: string, searchTerm: string) {
 
 <Tip>
 Remember to test search highlighting with various content types and edge cases to ensure consistent behavior.
+</Tip>
+
+## Highlight Animation Enhancement
+
+Added a smooth left-to-right highlight animation effect to improve the user experience when hovering over content titles.
+
+### Implementation Details
+```typescript
+// Tailwind keyframes configuration
+keyframes: {
+  highlight: {
+    '0%': { 
+      clipPath: 'inset(0 100% 0 0)',
+      WebkitClipPath: 'inset(0 100% 0 0)'
+    },
+    '100%': { 
+      clipPath: 'inset(0 0 0 0)',
+      WebkitClipPath: 'inset(0 0 0 0)'
+    }
+  }
+},
+animation: {
+  highlight: 'highlight 0.3s ease-in-out forwards'
+}
+
+// MasonryGrid component highlight span
+<span
+    className={`
+        absolute inset-0 
+        ${styles.accent} 
+        opacity-0
+        group-hover:opacity-15
+        group-hover:animate-highlight
+        rounded
+    `}
+    style={{
+        transform: 'skew(-12deg)',
+        top: '0%',
+        height: '100%',
+        left: '-4px',
+        right: '-4px',
+        clipPath: 'inset(0 100% 0 0)',
+        WebkitClipPath: 'inset(0 100% 0 0)'
+    }}
+/>
+```
+
+### Key Features
+- Smooth left-to-right reveal animation using `clip-path`
+- Maintains skewed angle during animation
+- Cross-browser support with `WebkitClipPath`
+- Consistent timing with existing hover effects
+- Proper z-indexing to keep text readable
+
+<Card>
+**Animation Flow**
+1. Initial state: highlight is clipped completely
+2. On hover: highlight reveals from left to right
+3. Animation completes in 0.3 seconds
+4. Maintains category-specific accent colors
+</Card>
+
+<Tip>
+The combination of `clip-path` animation and opacity transition creates a smooth, natural highlighting effect that enhances the user experience without being distracting.
 </Tip> 

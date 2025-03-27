@@ -1,37 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Creative Log
+
+A modern, type-safe blog platform built with Next.js 14, ContentLayer, and TypeScript. Track your learning journey, share your progress, and build in public.
+
+## Features
+
+### Current Features 🚀
+- **Modern Tech Stack**: Next.js 14, TypeScript, ContentLayer, Tailwind CSS
+- **Type-Safe Content**: Full type safety from content to components
+- **Beautiful UI**: Clean, modern design with smooth animations
+- **Category System**: Organized content with category-specific styling
+- **Search Functionality**: Real-time search with highlighted results
+- **Progress Tracking**: Daily logs with progress updates
+- **Responsive Design**: Mobile-first approach with masonry grid layout
+
+### Coming Soon 🌟
+- Analytics & Performance Monitoring
+- Enhanced Search with Fuzzy Matching
+- Social Features & Comments
+- Dark Mode & Theme Customization
+- Interactive Code Playgrounds
+- PWA Support
+- And much more! See our [detailed roadmap](docs/ROADMAP.md)
+
+## Tech Stack
+
+- **Framework**: Next.js 14 with App Router
+- **Language**: TypeScript
+- **Content**: MDX with ContentLayer
+- **Styling**: Tailwind CSS
+- **Animations**: Custom CSS animations
+- **Deployment**: Vercel
 
 ## Getting Started
 
-First, run the development server:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/creative-log.git
+   ```
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Run the development server:
+   ```bash
+   npm run dev
+   ```
+
+4. Open [http://localhost:3000](http://localhost:3000)
+
+## Project Structure
+
+```
+creative-log/
+├── src/
+│   ├── app/           # Next.js app router pages
+│   ├── components/    # React components
+│   ├── context/       # React context providers
+│   ├── hooks/         # Custom React hooks
+│   └── lib/           # Utility functions
+├── content/
+│   ├── posts/         # Blog posts (MDX)
+│   ├── projects/      # Project details (MDX)
+│   └── logs/          # Daily logs (MDX)
+├── public/            # Static assets
+└── docs/             # Documentation
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Contributing
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+We welcome contributions! Please see our [Contributing Guidelines](docs/CONTRIBUTING.md) and [Roadmap](docs/ROADMAP.md) for details.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Documentation
 
-## Learn More
+- [Setup Guide](docs/SETUP.md)
+- [Implementation Details](docs/IMPLEMENTATION.md)
+- [Project Roadmap](docs/ROADMAP.md)
+- [Contributing Guidelines](docs/CONTRIBUTING.md)
 
-To learn more about Next.js, take a look at the following resources:
+## License
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# creative-blog
+MIT License - see [LICENSE](LICENSE) for details

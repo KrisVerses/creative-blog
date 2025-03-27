@@ -12,10 +12,31 @@ module.exports = {
   // theme section is where you customize Tailwind's default design system
   theme: {
     // extend allows you to add new values while keeping the defaults
-    extend: {},
+    extend: {
+      keyframes: {
+        highlight: {
+          '0%': { 
+            clipPath: 'inset(0 100% 0 0)',
+            WebkitClipPath: 'inset(0 100% 0 0)'
+          },
+          '100%': { 
+            clipPath: 'inset(0 0 0 0)',
+            WebkitClipPath: 'inset(0 0 0 0)'
+          }
+        }
+      },
+      animation: {
+        highlight: 'highlight 0.3s ease-in-out forwards'
+      }
+    },
   },
 
   // plugins array lets you add additional Tailwind functionality
   // @tailwindcss/typography adds prose classes for beautiful text styling
-  plugins: [require("@tailwindcss/typography")],
+  plugins: [
+    require("@tailwindcss/typography"),
+    function({ addVariant }) {
+      addVariant('group-hover', ':merge(.group):hover &')
+    },
+  ],
 };

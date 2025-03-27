@@ -139,6 +139,16 @@ export default makeSource({
       // - Supports multiple programming languages
       // - Adds language-specific CSS classes for styling
       // - Must be used with a Prism.js compatible CSS theme
+      //
+      // FIX IMPLEMENTATION DETAILS:
+      // 1. rehype-prism-plus transforms code blocks during build time, NOT runtime
+      // 2. It adds language-specific classes to code elements (language-js, language-css, etc.)
+      // 3. It tokenizes code content into spans with .token.* classes for syntax highlighting
+      // 4. These tokens are styled using the Prism.js CSS in globals.css
+      // 5. The MDXComponents.tsx file handles these transformed elements correctly
+      //
+      // This server-side approach is more performant than client-side highlighting
+      // and avoids hydration errors or "flash of unstyled content" issues
       rehypePrism,
     ],
   },
