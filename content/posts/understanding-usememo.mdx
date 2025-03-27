@@ -1,0 +1,189 @@
+---
+title: "Understanding useMemo in React: A Beginner's Guide"
+date: "2025-03-27"
+tags: ["react", "hooks", "optimization", "javascript"]
+category: "coding"
+readingTime: 8
+summary: "Learn how to optimize React components using useMemo with practical examples. Understand when and why to use memoization for better performance."
+---
+
+# Understanding useMemo in React: A Beginner's Guide
+
+React's `useMemo` hook is a powerful tool for optimizing performance, but it can be confusing for beginners. Let's break it down with practical examples and understand when and why to use it.
+
+## What is Memoization?
+
+Before diving into `useMemo`, let's understand memoization:
+- Memoization is like caching for function results
+- It saves the output of expensive calculations
+- Returns the cached result when the same inputs occur again
+- Helps avoid unnecessary recalculations
+
+## Understanding useMemo
+
+`useMemo` is a React Hook that lets you cache the result of a calculation between re-renders. It takes two arguments:
+1. A function that returns a value you want to cache
+2. An array of dependencies that trigger recalculation
+
+Basic syntax:
+```javascript
+const cachedValue = useMemo(() => {
+    // Expensive calculation here
+    return result;
+}, [dependency1, dependency2]);
+```
+
+## Real-World Example
+
+Let's look at a practical example from our blog's category page:
+
+```typescript
+const filteredContent = useMemo(() => {
+    // Expensive filtering operation
+    const searchTerms = searchQuery.toLowerCase().split(' ').filter(Boolean);
+    
+    const posts = allPosts.filter(post =>
+        post.category === params.slug &&
+        matchesSearchTerms(post.title)
+    );
+
+    const projects = allProjects.filter(project =>
+        project.category === params.slug &&
+        matchesSearchTerms(project.title)
+    );
+
+    return { posts, projects };
+}, [params.slug, searchQuery]); // Only recalculate when these values change
+```
+
+In this example:
+1. We're filtering posts and projects based on search terms
+2. The calculation only runs when the category (`params.slug`) or search query changes
+3. The filtered results are cached between renders
+
+## When to Use useMemo
+
+You should consider using `useMemo` when:
+
+1. **You have expensive calculations:**
+   ```typescript
+   // Expensive: Filtering large arrays
+   const filtered = useMemo(() => 
+       items.filter(item => complexCalculation(item)),
+       [items]
+   );
+   ```
+
+2. **You want to prevent unnecessary re-renders:**
+   ```typescript
+   // Prevents new object creation on every render
+   const styles = useMemo(() => ({
+       color: theme === 'dark' ? 'white' : 'black',
+       background: theme === 'dark' ? 'black' : 'white'
+   }), [theme]);
+   ```
+
+3. **You're passing calculated values to child components:**
+   ```typescript
+   const sortedItems = useMemo(() => 
+       items.sort((a, b) => b.date - a.date),
+       [items]
+   );
+   ```
+
+## When Not to Use useMemo
+
+Avoid `useMemo` when:
+
+1. **The calculation is simple:**
+   ```typescript
+   // Don't use useMemo here - overhead > benefit
+   const fullName = firstName + ' ' + lastName;
+   ```
+
+2. **The dependencies change too frequently:**
+   ```typescript
+   // Pointless if searchTerm changes on every keystroke
+   const filtered = useMemo(() => 
+       items.filter(i => i.includes(searchTerm)),
+       [searchTerm]
+   );
+   ```
+
+## Performance Impact
+
+Using `useMemo` comes with its own overhead:
+1. Memory used to store the cached value
+2. Comparison of dependencies on every render
+3. Initial setup cost
+
+Therefore, only use it when the benefits outweigh these costs.
+
+## Best Practices
+
+1. **Profile First:**
+   - Measure performance before optimizing
+   - Use React DevTools Performance tab
+   - Ensure there's actually a performance problem
+
+2. **Choose Dependencies Carefully:**
+   ```typescript
+   // Good: Specific dependencies
+   useMemo(() => expensiveCalc(a, b), [a, b]);
+   
+   // Bad: Too many dependencies
+   useMemo(() => expensiveCalc(props), [props]);
+   ```
+
+3. **Keep Memoized Functions Simple:**
+   ```typescript
+   // Good: Clear, single purpose
+   const sortedList = useMemo(() => 
+       items.sort((a, b) => a.id - b.id),
+       [items]
+   );
+
+   // Bad: Multiple operations mixed
+   const processedList = useMemo(() => 
+       items
+           .filter(i => i.active)
+           .sort((a, b) => a.id - b.id)
+           .map(i => transform(i)),
+       [items]
+   );
+   ```
+
+## Common Gotchas
+
+1. **Forgetting Dependencies:**
+   ```typescript
+   // Wrong: Missing dependency
+   const result = useMemo(() => a + b, [a]);
+   
+   // Correct: All dependencies included
+   const result = useMemo(() => a + b, [a, b]);
+   ```
+
+2. **Premature Optimization:**
+   ```typescript
+   // Unnecessary: Simple calculation
+   const doubled = useMemo(() => number * 2, [number]);
+   
+   // Better: Direct calculation
+   const doubled = number * 2;
+   ```
+
+## Conclusion
+
+`useMemo` is a powerful tool for optimizing React applications, but it should be used judiciously. Remember:
+1. Only memoize expensive calculations
+2. Profile before optimizing
+3. Consider the overhead
+4. Keep dependencies minimal and specific
+
+By following these guidelines, you can effectively use `useMemo` to improve your application's performance while maintaining clean and maintainable code.
+
+## Further Reading
+- [React Documentation on useMemo](https://react.dev/reference/react/useMemo)
+- [React Performance Optimization](https://react.dev/learn/render-and-commit)
+- [When to useMemo and useCallback](https://kentcdodds.com/blog/usememo-and-usecallback) 

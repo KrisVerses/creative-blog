@@ -8,6 +8,7 @@ import { useColors } from '@/context/ColorContext'; // Hook for category-specifi
 import Image from 'next/image'; // Next.js optimized image component
 import Link from 'next/link'; // Next.js link component
 import { highlightText } from '@/lib/utils'; // Utility for search term highlighting
+import { format } from 'date-fns';
 
 // Define the content type as either Post or Project
 type Content = Post | Project;
@@ -68,7 +69,15 @@ const MasonryGrid = ({ items, category, searchQuery = '' }: MasonryGridProps) =>
                         </div>
                     )}
                     {/* Content link wrapper */}
-                    <Link href={`/${content.type.toLowerCase()}/${content.slug}`} className="block">
+                    <Link href={`/${content.type.toLowerCase() + "s"}/${content.slug}`} className="block">
+                        {/* Date display */}
+                        <div className="flex items-center gap-2 mb-2 text-sm text-slate-500">
+                            <time dateTime={content.date}>
+                                {format(new Date(content.date), 'MMMM d, yyyy')}
+                            </time>
+                            <span className="inline-block w-1 h-1 rounded-full bg-slate-300" />
+                            <span>{content.type}</span>
+                        </div>
                         {/* Title with hover effect */}
                         <h3 className="relative inline-block mb-3 group">
                             {/* 
@@ -83,7 +92,13 @@ const MasonryGrid = ({ items, category, searchQuery = '' }: MasonryGridProps) =>
                 transition-colors duration-300      // Smooth color transition
               `}>
                                 {/* Title text with optional search highlighting */}
-                                {searchQuery.trim() ? highlightText(content.title, searchQuery) : content.title}
+                                {searchQuery.trim()
+                                    ? highlightText(
+                                        content.title,
+                                        searchQuery,
+                                        `${styles.accent.replace('bg-', 'bg-opacity-10 ')} ${styles.accent.replace('bg-', 'text-')}`
+                                    )
+                                    : content.title}
                             </span>
 
                             {/* Background highlight effect */}
@@ -114,7 +129,13 @@ const MasonryGrid = ({ items, category, searchQuery = '' }: MasonryGridProps) =>
               leading-relaxed         // Comfortable line height
             `}>
                             {/* Summary text with optional search highlighting */}
-                            {searchQuery.trim() ? highlightText(content.summary || '', searchQuery) : content.summary}
+                            {searchQuery.trim()
+                                ? highlightText(
+                                    content.summary || '',
+                                    searchQuery,
+                                    `${styles.accent.replace('bg-', 'bg-opacity-10 ')} ${styles.accent.replace('bg-', 'text-')}`
+                                )
+                                : content.summary}
                         </p>
                         {/* Read more link */}
                         <div className={`

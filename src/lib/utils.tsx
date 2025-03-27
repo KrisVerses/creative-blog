@@ -19,7 +19,7 @@ export function getSortedLogs(logs: Log[]) {
     return logs.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
 
-export function highlightText(text: string, searchTerm: string): React.ReactNode {
+export function highlightText(text: string, searchTerm: string, accentClass?: string): React.ReactNode {
     if (!searchTerm.trim()) return text;
 
     const parts = text.split(new RegExp(`(${searchTerm})`, 'gi'));
@@ -27,7 +27,7 @@ export function highlightText(text: string, searchTerm: string): React.ReactNode
         part.toLowerCase() === searchTerm.toLowerCase() ? (
             <mark
                 key={i}
-                className="bg-[#FF6F61]/10 text-[#FF6F61] px-1 rounded"
+                className={`px-1 rounded ${accentClass || 'bg-[#FF6F61]/10 text-[#FF6F61]'}`}
             >
                 {part}
             </mark>

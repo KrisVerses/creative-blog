@@ -26,7 +26,7 @@ function HomeIndex() {
             />
           </div>
           <Link
-            href={`/project/${featuredProject?._raw.sourceFileName.replace(".mdx", "")}`}
+            href={`/projects/${featuredProject?._raw.sourceFileName.replace(".mdx", "")}`}
             className="block group cursor-pointer"
           >
             <h2 className="text-xl sm:text-2xl font-bold mb-4 text-slate-800 group-hover:text-[#FF6F61] transition-colors">
@@ -44,7 +44,7 @@ function HomeIndex() {
               </svg>
               <span>{featuredProject?.date && format(new Date(featuredProject.date), 'MMMM d, yyyy')}</span>
             </div>
-            <Link href={`/project/${featuredProject?._raw.sourceFileName.replace(".mdx", "")}`}>
+            <Link href={`/projects/${featuredProject?._raw.sourceFileName.replace(".mdx", "")}`}>
               <button className="inline-flex items-center gap-2 px-4 py-2 bg-[#FF6F61] text-white rounded-lg hover:bg-[#FF6F61]/90 transition-colors shadow-sm hover:shadow-md">
                 <span>View Project</span>
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -61,7 +61,7 @@ function HomeIndex() {
           <div className="space-y-6">
             {latestPosts.map(post => (
               <Link
-                href={`/post/${post._raw.sourceFileName.replace(".mdx", "")}`}
+                href={`/posts/${post._raw.sourceFileName.replace(".mdx", "")}`}
                 key={post._id}
                 className="group block"
               >
@@ -82,7 +82,7 @@ function HomeIndex() {
               </Link>
             ))}
             <Link
-              href="/post"
+              href="/posts"
               className="inline-flex items-center gap-2 text-sm text-gray-600 font-semibold hover:text-[#FF6F61] transition-colors group"
             >
               View All Posts

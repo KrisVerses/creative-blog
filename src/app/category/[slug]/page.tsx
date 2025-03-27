@@ -2,14 +2,15 @@
 
 import { useState, useMemo, useEffect } from 'react';
 import { allPosts, allProjects } from 'contentlayer/generated';
-import { Search } from 'lucide-react';
-import Link from 'next/link';
+import { Search, SortDesc } from 'lucide-react';
+import { FaTimes } from 'react-icons/fa';
 import { notFound } from 'next/navigation';
-import Image from 'next/image';
 import { useColors } from '@/context/ColorContext';
-import MasonryGrid from '@/components/MasonryGrid';
+import MasonryGrid from '@/components/ui/MasonryGrid';
 
 type CategorySlug = 'coding' | 'design' | 'health' | 'life' | 'productivity' | 'self-help' | 'travel' | 'writing';
+type SortOption = 'date' | 'title';
+type SortDirection = 'asc' | 'desc';
 
 const categories = [
     { name: 'Coding', slug: 'coding' as CategorySlug },
@@ -22,28 +23,10 @@ const categories = [
     { name: 'Writing', slug: 'writing' as CategorySlug },
 ];
 
-// Helper function to highlight search terms
-function highlightText(text: string, searchTerm: string) {
-    if (!searchTerm.trim()) return text;
-
-    // Escape special regex characters in the search term
-    const escapedSearchTerm = searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-
-    // Create a regex that matches the search term within words
-    const regex = new RegExp(`(${escapedSearchTerm})`, 'gi');
-    const parts = text.split(regex);
-
-    return parts.map((part, i) => {
-        // Check if this part matches the search term (case-insensitive)
-        if (part.toLowerCase() === searchTerm.toLowerCase() || regex.test(part)) {
-            return <mark key={i} className="bg-[#FF6F61]/10 text-[#FF6F61] px-1 rounded">{part}</mark>;
-        }
-        return part;
-    });
-}
-
 export default function CategoryPage({ params }: { params: { slug: string } }) {
     const [searchQuery, setSearchQuery] = useState('');
+    const [sortBy, setSortBy] = useState<SortOption>('date');
+    const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
     const { categoryStyles, setCurrentCategory } = useColors();
     const category = categories.find(cat => cat.slug === params.slug);
 
@@ -59,7 +42,7 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
         return () => setCurrentCategory(null);
     }, [params.slug, setCurrentCategory]);
 
-    // Filter posts and projects by category and search query
+    // Filter and sort content
     const filteredContent = useMemo(() => {
         const searchTerms = searchQuery.toLowerCase().split(' ').filter(Boolean);
 
@@ -69,22 +52,46 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
             return searchTerms.every(term => normalizedText.includes(term));
         };
 
-        const posts = allPosts.filter(post =>
-            post.category === params.slug &&
-            (searchTerms.length === 0 ||
-                matchesSearchTerms(post.title) ||
-                matchesSearchTerms(post.summary))
+        // Helper function to sort content
+        const sortContent = <T extends { date: string; title: string }>(items: T[]) => {
+            return [...items].sort((a, b) => {
+                if (sortBy === 'date') {
+                    const comparison = new Date(b.date).getTime() - new Date(a.date).getTime();
+                    return sortDirection === 'desc' ? comparison : -comparison;
+                } else {
+                    const comparison = a.title.localeCompare(b.title);
+                    return sortDirection === 'desc' ? -comparison : comparison;
+                }
+            });
+        };
+
+        // Filter and sort posts
+        const posts = sortContent(
+            allPosts.filter(post =>
+                post.category === params.slug &&
+                (searchTerms.length === 0 ||
+                    matchesSearchTerms(post.title) ||
+                    matchesSearchTerms(post.summary))
+            )
         );
 
-        const projects = allProjects.filter(project =>
-            project.category === params.slug &&
-            (searchTerms.length === 0 ||
-                matchesSearchTerms(project.title) ||
-                matchesSearchTerms(project.summary))
+        // Filter and sort projects
+        const projects = sortContent(
+            allProjects.filter(project =>
+                project.category === params.slug &&
+                (searchTerms.length === 0 ||
+                    matchesSearchTerms(project.title) ||
+                    matchesSearchTerms(project.summary))
+            )
         );
 
         return { posts, projects };
-    }, [params.slug, searchQuery]);
+    }, [params.slug, searchQuery, sortBy, sortDirection]);
+
+    // Toggle sort direction
+    const toggleSortDirection = () => {
+        setSortDirection(prev => prev === 'desc' ? 'asc' : 'desc');
+    };
 
     return (
         <main className="min-h-screen bg-white">
@@ -134,26 +141,62 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
                 </div>
             </div>
 
-            {/* Search Bar */}
+            {/* Search and Sort Controls */}
             <div className="max-w-7xl mx-auto px-4 py-8">
-                <div className="relative">
-                    <label htmlFor="category-search" className="sr-only">
-                        Search in {category.name}
-                    </label>
-                    <input
-                        id="category-search"
-                        type="text"
-                        placeholder={`Search in ${category.name}...`}
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full px-4 py-3 pl-12 rounded-lg bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#FF6F61]/30 focus:border-[#FF6F61] text-slate-800 placeholder:text-gray-400"
-                        aria-label={`Search in ${category.name}`}
-                    />
-                    <Search
-                        className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"
-                        size={20}
-                        aria-hidden="true"
-                    />
+                <div className="flex flex-col sm:flex-row gap-4">
+                    {/* Search Bar */}
+                    <div className="relative flex-grow">
+                        <label htmlFor="category-search" className="sr-only">
+                            Search in {category.name}
+                        </label>
+                        <input
+                            id="category-search"
+                            type="text"
+                            placeholder={`Search in ${category.name}...`}
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="w-full px-4 py-3 pl-12 rounded-lg bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#FF6F61]/30 focus:border-[#FF6F61] text-slate-800 placeholder:text-gray-400"
+                            aria-label={`Search in ${category.name}`}
+                        />
+                        <Search
+                            className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"
+                            size={20}
+                            aria-hidden="true"
+                        />
+                        {searchQuery && (
+                            <button
+                                type="button"
+                                onClick={() => setSearchQuery('')}
+                                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                                aria-label="Clear search"
+                            >
+                                <FaTimes size={16} />
+                            </button>
+                        )}
+                    </div>
+
+                    {/* Sort Controls */}
+                    <div className="flex gap-2">
+                        <select
+                            value={sortBy}
+                            onChange={(e) => setSortBy(e.target.value as SortOption)}
+                            className="px-4 py-2 rounded-lg bg-slate-50 border border-slate-200 text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#FF6F61]/30 focus:border-[#FF6F61]"
+                        >
+                            <option value="date">Sort by Date</option>
+                            <option value="title">Sort by Title</option>
+                        </select>
+                        <button
+                            onClick={toggleSortDirection}
+                            className="px-4 py-2 rounded-lg bg-slate-50 border border-slate-200 text-slate-800 hover:bg-slate-100 transition-colors flex items-center gap-2"
+                            aria-label={`Sort ${sortDirection === 'desc' ? 'descending' : 'ascending'}`}
+                        >
+                            <SortDesc
+                                className={`transform transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''
+                                    }`}
+                                size={20}
+                            />
+                        </button>
+                    </div>
                 </div>
             </div>
 

@@ -1,22 +1,27 @@
 import { createContext, useContext, ReactNode, useState } from 'react';
 
+// Define valid category slugs as a union type for type safety
 type CategorySlug = 'coding' | 'design' | 'health' | 'life' | 'productivity' | 'self-help' | 'travel' | 'writing';
 
+// Define the structure of styles available for each category
 type CategoryStyle = {
-    bg: string;
-    accent: string;
-    text: string;
-    hover: string;
-    pattern: string;
-    cardBg: string;
+    bg: string;      // Background color class
+    accent: string;  // Accent color for highlights and emphasis
+    text: string;    // Text color class
+    hover: string;   // Hover state color class
+    pattern: string; // Background pattern/gradient
+    cardBg: string;  // Card background color
 };
 
+// Define the shape of our context
 type ColorContextType = {
-    currentCategory: CategorySlug | null;
-    categoryStyles: Record<CategorySlug, CategoryStyle>;
-    setCurrentCategory: (category: CategorySlug | null) => void;
+    currentCategory: CategorySlug | null;    // Currently active category
+    categoryStyles: Record<CategorySlug, CategoryStyle>;  // Map of styles for each category
+    setCurrentCategory: (category: CategorySlug | null) => void;  // Function to update current category
 };
 
+// Define the styles for each category using Tailwind classes
+// This acts as our theme configuration
 export const categoryStyles: Record<CategorySlug, CategoryStyle> = {
     coding: {
         bg: 'bg-[#1a1a1a]',
@@ -84,9 +89,12 @@ export const categoryStyles: Record<CategorySlug, CategoryStyle> = {
     }
 };
 
+// Create the context with undefined default value
 const ColorContext = createContext<ColorContextType | undefined>(undefined);
 
+// Provider component that wraps our app and makes color context available
 export function ColorProvider({ children }: { children: ReactNode }) {
+    // State to track the current category
     const [currentCategory, setCurrentCategory] = useState<CategorySlug | null>(null);
 
     return (
@@ -96,6 +104,8 @@ export function ColorProvider({ children }: { children: ReactNode }) {
     );
 }
 
+// Custom hook to use the color context
+// Throws an error if used outside of ColorProvider
 export function useColors() {
     const context = useContext(ColorContext);
     if (context === undefined) {

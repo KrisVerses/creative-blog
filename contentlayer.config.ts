@@ -12,7 +12,7 @@ const tagValidation = (tags: string[]) =>
 
 export const Post = defineDocumentType(() => ({
   name: "Post",
-  filePathPattern: "post/**/*.mdx",
+  filePathPattern: "posts/**/*.mdx",
   contentType: "mdx" as const,
   fields: {
     title: { type: "string", required: true },
@@ -43,8 +43,8 @@ export const Post = defineDocumentType(() => ({
       // resolve is a function that generates the URL for each document
       // doc: represents the current document being processed
       // doc._raw.flattenedPath: gets the processed file path without extension
-      // returns: a URL string in format '/post/[path]'
-      resolve: (doc) => `/post/${doc._raw.sourceFileName.replace('.mdx', '')}`,
+      // returns: a URL string in format '/posts/[path]'
+      resolve: (doc) => `/posts/${doc._raw.sourceFileName.replace('.mdx', '')}`,
     },
     slug: {
       type: "string",
@@ -79,7 +79,7 @@ export const Project = defineDocumentType(() => ({
   computedFields: {
     url: {
       type: "string",
-      resolve: (doc) => `/project/${doc._raw.sourceFileName.replace('.mdx', '')}`,
+      resolve: (doc) => `/projects/${doc._raw.sourceFileName.replace('.mdx', '')}`,
     },
     slug: {
       type: "string",

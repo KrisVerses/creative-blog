@@ -28,7 +28,7 @@ function LogPage({ params }: { params: { slug: string } }) {
                     <h1 className="text-3xl font-bold text-slate-800">Log Not Found</h1>
                     <p className="text-gray-600">We couldn't find the log entry you're looking for.</p>
                     <Link
-                        href="/project"
+                        href="/projects"
                         className="inline-flex items-center gap-2 px-4 py-2 bg-[#FF6F61] text-white rounded-lg hover:bg-[#FF6F61]/90 transition-colors mt-4"
                     >
                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -83,7 +83,7 @@ function LogPage({ params }: { params: { slug: string } }) {
         <article className="max-w-2xl mx-auto px-4 py-16 sm:px-6 lg:max-w-4xl lg:px-8">
             {/* Back to project link */}
             <Link
-                href={`/project/${project?._raw.sourceFileName.replace(".mdx", "")}`}
+                href={`/projects/${project?._raw.sourceFileName.replace(".mdx", "")}`}
                 className="mb-4 inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700"
             >
                 <ArrowLeft className="h-4 w-4" />
@@ -133,7 +133,7 @@ function LogPage({ params }: { params: { slug: string } }) {
             {/* Back to project link at the bottom */}
             <div className="mt-12 pt-6 border-t border-gray-200">
                 <Link
-                    href={`/project/${project?._raw.sourceFileName.replace(".mdx", "")}`}
+                    href={`/projects/${project?._raw.sourceFileName.replace(".mdx", "")}`}
                     className="inline-flex items-center gap-2 text-gray-600 hover:text-[#FF6F61] transition-colors group"
                 >
                     <svg className="w-4 h-4 transform transition-transform group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">

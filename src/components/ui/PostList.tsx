@@ -71,7 +71,7 @@ function HighlightedText({ text, term }: { text: string; term: string }) {
     const parts = text.split(new RegExp(`(${term})`, 'gi'));
 
     return (
-        <p className="mt-2">
+        <p className="mt-2 text-gray-800/90">
             {parts.map((part, i) =>
                 part.toLowerCase() === term.toLowerCase() ? (
                     <span key={i} className="bg-yellow-200 font-medium">
@@ -107,7 +107,7 @@ export default function PostList({ searchTerm }: PostListProps) {
                     </h3>
                     <div className="flex gap-2 flex-wrap h-[32px]">
                         {[1, 2, 3, 4, 5, 6].map((i) => (
-                            <div key={i} className="px-3 py-1.5 rounded-full h-7 w-20 border border-slate-200 bg-slate-50 animate-pulse" />
+                            <div key={i} className="px-3 py-1.5 rounded-full h-7 w-40 border border-slate-200 bg-slate-50 animate-pulse" />
                         ))}
                     </div>
                 </div>
@@ -176,6 +176,7 @@ export default function PostList({ searchTerm }: PostListProps) {
                     <TagList
                         selectedTag={selectedTag}
                         onTagSelect={setSelectedTag}
+                        isLoading={isLoading}
                     />
                 </div>
             </div>
@@ -259,7 +260,7 @@ export default function PostList({ searchTerm }: PostListProps) {
                                             </div>
                                         )}
                                         {/* Tags Section */}
-                                        <div className="flex gap-2 pt-2">
+                                        <div className="flex flex-wrap gap-2 pt-2">
                                             {post.tags?.map((tag: string) => (
                                                 <span
                                                     key={tag}

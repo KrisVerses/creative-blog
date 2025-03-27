@@ -8,6 +8,47 @@ relatedProjects: ["creative-blog"]
 category: "coding"
 ---
 
+<Card className="bg-muted/50 border-muted-foreground/20">
+  <h2 className="text-lg font-semibold mb-2">Quick Reference Guide</h2>
+  <div className="space-y-4">
+    <div>
+      <h3 className="font-medium text-sm text-muted-foreground">Project Structure</h3>
+      <ul className="text-sm mt-1 space-y-1">
+        <li>• <code>content/</code> - MDX content (posts, projects, logs)</li>
+        <li>• <code>src/app/</code> - Next.js pages and layouts</li>
+        <li>• <code>src/components/</code> - React components</li>
+        <li>• <code>src/lib/</code> - Utility functions</li>
+      </ul>
+    </div>
+    <div>
+      <h3 className="font-medium text-sm text-muted-foreground">Key Files</h3>
+      <ul className="text-sm mt-1 space-y-1">
+        <li>• <code>contentlayer.config.ts</code> - Content type definitions</li>
+        <li>• <code>src/components/ui/MDXComponents.tsx</code> - MDX rendering</li>
+        <li>• <code>src/app/layout.tsx</code> - Root layout</li>
+        <li>• <code>src/providers/theme-provider.tsx</code> - Theme management</li>
+      </ul>
+    </div>
+    <div>
+      <h3 className="font-medium text-sm text-muted-foreground">Content Types</h3>
+      <ul className="text-sm mt-1 space-y-1">
+        <li>• <code>posts/</code> - Blog articles and tutorials</li>
+        <li>• <code>projects/</code> - Project documentation</li>
+        <li>• <code>logs/</code> - Development progress updates</li>
+      </ul>
+    </div>
+    <div>
+      <h3 className="font-medium text-sm text-muted-foreground">Development Flow</h3>
+      <ol className="text-sm mt-1 space-y-1">
+        <li>1. Content written in MDX files</li>
+        <li>2. ContentLayer processes and validates</li>
+        <li>3. Next.js renders with MDX components</li>
+        <li>4. Styled with Tailwind CSS</li>
+      </ol>
+    </div>
+  </div>
+</Card>
+
 # Understanding the Creative Blog Architecture
 
 <Card>

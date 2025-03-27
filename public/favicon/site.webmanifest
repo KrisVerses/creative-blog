@@ -1,0 +1,19 @@
+{
+  "name": "Kris.dev Creative Log",
+  "short_name": "Kris.dev",
+  "icons": [
+    {
+      "src": "/brandImages/1.jpg",
+      "sizes": "192x192",
+      "type": "image/jpg"
+    },
+    {
+      "src": "/brandImages/1.jpg",
+      "sizes": "512x512",
+      "type": "image/jpg"
+    }
+  ],
+  "theme_color": "#98F7CF",
+  "background_color": "#1a1a1a",
+  "display": "standalone"
+} 
